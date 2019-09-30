@@ -28,6 +28,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-devtools")
+    
+    compile group: 'org.aspectj', name: 'aspectjrt', version: '1.9.2'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.2'
 
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.16'
     compile group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
