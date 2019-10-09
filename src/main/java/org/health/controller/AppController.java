@@ -1,9 +1,6 @@
 package org.health.controller;
 
-import org.health.model.Animal;
-import org.health.model.Cat;
-import org.health.model.Dog;
-import org.health.model.Rabbit;
+import org.health.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +19,7 @@ public class AppController {
     private Rabbit rabbit;
     private Dog dog;
     private Animal animal;
+    private SQLRequest sqlRequest;
 
     public AppController(Cat cat, Dog dog) {
         this.cat = cat;
@@ -33,6 +31,18 @@ public class AppController {
     public String getHelloPage(@PathVariable("name") String name, Model model){
         model.addAttribute("name", name);
         return "hello";
+    }
+
+    @RequestMapping("/create")
+    public String createTable(Model model) {
+        model.addAttribute("status", sqlRequest.getTableCreationStatus());
+        return "table";
+    }
+
+    @RequestMapping("/dogs/get/count/{name}")
+    public String getDogsCount(@PathVariable("name") String name, Model model){
+        model.addAttribute("info", sqlRequest.getInfo(name));
+        return "dogs";
     }
 
     @RequestMapping("/")
@@ -55,6 +65,11 @@ public class AppController {
     @Qualifier(value = "croc")
     public void setAnimal(Animal animal) {
         this.animal = animal;
+    }
+
+    @Autowired
+    public void setSqlRequest(SQLRequest sqlRequest) {
+        this.sqlRequest = sqlRequest;
     }
 
     // recommend since 2018
