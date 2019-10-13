@@ -1,6 +1,7 @@
 package org.health.controller;
 
 import org.health.model.*;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,6 +72,7 @@ public class AppController {
     public void setSqlRequest(SQLRequest sqlRequest) {
         this.sqlRequest = sqlRequest;
     }
+
 
     // recommend since 2018
 //    @Autowired
