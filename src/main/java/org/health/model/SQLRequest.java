@@ -12,5 +12,5 @@ public interface SQLRequest {
      * @param name - specific name of dogs
      * @return count of dog's with specific name
      * */
-    Integer getInfo(String name);
+    Integer getInfo(String name, String description);
 }

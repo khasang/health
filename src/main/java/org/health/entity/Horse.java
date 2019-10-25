@@ -1,5 +1,7 @@
 package org.health.entity;
 
+import org.springframework.stereotype.Controller;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,6 +12,7 @@ public class Horse {
     private long id;
 
 //    @Column(name = "horse_name")
+    @Column
     private String name;
     private String description;
 

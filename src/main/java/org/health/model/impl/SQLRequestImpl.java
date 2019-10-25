@@ -1,5 +1,6 @@
 package org.health.model.impl;
 
+import org.apache.catalina.util.ParameterMap;
 import org.health.model.SQLRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service("sqlRequest")
 public class SQLRequestImpl implements SQLRequest {
@@ -33,9 +36,13 @@ public class SQLRequestImpl implements SQLRequest {
     }
 
     @Override
-    public Integer getInfo(String name) {
-        String sql = "select count(*) from dogs where name = :name";
-        SqlParameterSource namedparameter = new MapSqlParameterSource("name", name);
+    public Integer getInfo(String name, String description) {
+        String sql = "select count(*) from dogs where name = :name and description = :description";
+        Map<String, String> map = new ParameterMap<>();
+        map.put("name", name);
+        map.put("description", description);
+
+        SqlParameterSource namedparameter = new MapSqlParameterSource(map);
         return this.namedParameterJdbcTemplate.queryForObject(sql, namedparameter, Integer.class);
     }
 

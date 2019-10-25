@@ -41,9 +41,10 @@ public class AppController {
         return "table";
     }
 
-    @RequestMapping(value = "/dogs/get/count/{name}")
-    public String getDogsCount(@PathVariable("name") String name, Model model){
-        model.addAttribute("info", sqlRequest.getInfo(name));
+    @RequestMapping(value = "/dogs/get/count/{name}/description/{description}")
+    public String getDogsCount(@PathVariable("name") String name, @PathVariable("description") String description,
+                               Model model){
+        model.addAttribute("info", sqlRequest.getInfo(name, description));
         return "dogs";
     }
 
