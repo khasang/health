@@ -3,6 +3,7 @@ package org.health.controller;
 import org.health.entity.Horse;
 import org.health.servive.HorseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class HorseController {
     private HorseService horseService;
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public Horse addHorse(@RequestBody Horse horse) {
         return horseService.addHorse(horse);
