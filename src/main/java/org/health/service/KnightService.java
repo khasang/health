@@ -1,4 +1,4 @@
-package org.health.servive;
+package org.health.service;
 
 public interface KnightService {
 

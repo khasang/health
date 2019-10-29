@@ -1,8 +1,8 @@
-package org.health.servive.impl;
+package org.health.service.impl;
 
 import org.health.dao.HorseDao;
 import org.health.entity.Horse;
-import org.health.servive.HorseService;
+import org.health.service.HorseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

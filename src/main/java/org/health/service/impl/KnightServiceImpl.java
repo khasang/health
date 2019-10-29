@@ -1,6 +1,6 @@
-package org.health.servive.impl;
+package org.health.service.impl;
 
-import org.health.servive.KnightService;
+import org.health.service.KnightService;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;

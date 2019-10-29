@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 public class Bard {
 
-//    @Pointcut("execution(* org.health.servive.impl.KnightServiceImpl.getAchievement(..))")
+//    @Pointcut("execution(* org.health.service.impl.KnightServiceImpl.getAchievement(..))")
 //    public void serviceBefore() {
 //
 //    }
@@ -24,7 +24,7 @@ public class Bard {
 //        System.err.println("LALALALaaalala");
 //    }
 
-    @Around("execution(* org.health.servive.impl.KnightServiceImpl.getAchievement(..)) && args(val, ..)")
+    @Around("execution(* org.health.service.impl.KnightServiceImpl.getAchievement(..)) && args(val, ..)")
     public Object action(ProceedingJoinPoint joinPoint, String val) throws Throwable {
         long timeBefore = System.currentTimeMillis();
         Object obj = joinPoint.proceed();

@@ -1,7 +1,8 @@
 package org.health.controller;
 
-import org.health.entity.Horse;
-import org.health.service.HorseService;
+import org.health.dto.EmployeeDto;
+import org.health.entity.Employee;
+import org.health.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,42 +11,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/horse")
-public class HorseController {
-    private HorseService horseService;
+@RequestMapping("/employee")
+public class EmployeeController {
+    private EmployeeService employeeService;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public Horse addHorse(@RequestBody Horse horse) {
-        return horseService.addHorse(horse);
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return employeeService.addEmployee(employee);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public Horse updateHorse(@RequestBody Horse horse) {
-        return horseService.updateHorse(horse);
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        return employeeService.updateEmployee(employee);
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public Horse getHorseById(@PathVariable("id") long id) {
-        return horseService.getHorse(id);
+    public EmployeeDto getEmployeeById(@PathVariable("id") long id) {
+        return employeeService.getEmployee(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public List<Horse> getAllHorses() {
-        return horseService.getAllHorses();
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=utf-8")
     @ResponseBody
-    public Horse deleteHorseById(@PathVariable("id") long id) {
-        return horseService.deleteHorse(id);
+    public Employee deleteEmployeeById(@PathVariable("id") long id) {
+        return employeeService.deleteEmployee(id);
     }
 
     @Autowired
-    public void setHorseService(HorseService horseService) {
-        this.horseService = horseService;
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 }
