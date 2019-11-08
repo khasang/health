@@ -10,7 +10,7 @@ public class UserDto {
     private String lastName;
     private String patronymic;
     private String login;
-    private long role_id;
+    private long roleId;
     
     public UserDto getUserDto(User user) {
         UserDto userDto = new UserDto();
@@ -19,7 +19,7 @@ public class UserDto {
         userDto.setLastName(user.getLastName());
         userDto.setPatronymic(user.getPatronymic());
         userDto.setLogin(user.getLogin());
-        userDto.setRole_id(user.getRole_id());
+        userDto.setRoleId(user.getRoleId());
         
         return userDto;
     }
@@ -64,11 +64,11 @@ public class UserDto {
         this.login = login;
     }
 
-    public long getRole_id() {
-        return role_id;
+    public long getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(long role_id) {
-        this.role_id = role_id;
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 }
