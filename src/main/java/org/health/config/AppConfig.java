@@ -24,7 +24,7 @@ public class AppConfig {
     }
 
     @Bean
-    public EmployeeDao employeeDao(){
+    public EmployeeDao employeeDao() {
         return new EmployeeDaoImpl(Employee.class);
     }
 
@@ -39,7 +39,12 @@ public class AppConfig {
     }
 
     @Bean
-    public ResultExaminationDao resultExaminationDao(){
+    public ResultExaminationDao resultExaminationDao() {
         return new ResultExaminationDaoImpl(ResultExamination.class);
+    }
+
+    @Bean
+    public ExaminationDao examinationDaoDao() {
+        return new ExaminationDaoImpl(Examination.class);
     }
 }
