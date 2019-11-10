@@ -1,5 +1,8 @@
 package org.health.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -12,23 +15,29 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "inspections")
+@ApiModel(value = "Inspection", description = "Class representing an inspection of patient.")
 public class Inspection {
 
     /** Field inspection id.*/
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "Unique identifier of inspection", required = true, example = "1", position = 1)
     private long id;
 
     /** Field date with time.*/
+    @ApiModelProperty(notes = "Inspection starting time", example = "2019-11-10T00:06:05.762Z", required = true, position = 2)
     private LocalDateTime time;
 
-    /** Field room number.*/
-    private int room;
-
     /** Field inspection duration time.*/
+    @ApiModelProperty(notes = "Inspection duration time", required = true, position = 3)
     private long duration;
 
+    /** Field room number.*/
+    @ApiModelProperty(notes = "Inspection room", required = true, example = "114", position = 4)
+    private int room;
+
     /** Field price.*/
+    @ApiModelProperty(notes = "Price for inspection", required = true, example = "1500", position = 5)
     private int price;
 
     /** Field id getter.*/
