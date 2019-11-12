@@ -13,9 +13,19 @@ import org.springframework.stereotype.*;
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
     private UserDto userDto;
-    
+
+    /**
+     * Перед записью данных, проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи
+     *
+     * @param user - user for adding
+     * @return
+     */
     @Override
     public User addUser(User user) {
+        if (!user.checkingOnEmptinessFields()) {
+            return user;
+        }
+
         return userDao.addEntity(user);
     }
 

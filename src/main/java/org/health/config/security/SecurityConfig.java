@@ -7,12 +7,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableGlobalAuthentication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private PasswordEncoder passwordEncoder;
     private UserDetailsService userDetailsService;
 
     @Override
@@ -22,17 +22,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/user/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/").permitAll()
-                .and().csrf().disable().cors().disable().formLogin()
+                .and().csrf().disable().cors().disable().formLogin().loginPage("/login")
                 .defaultSuccessUrl("/", false);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(this.passwordEncoder);
     }
 
-    private PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Autowired

@@ -20,7 +20,7 @@ public class UserDto {
         userDto.setPatronymic(user.getPatronymic());
         userDto.setLogin(user.getLogin());
         userDto.setRoleId(user.getRoleId());
-        
+
         return userDto;
     }
 
