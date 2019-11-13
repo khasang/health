@@ -36,6 +36,7 @@ public class RoleControllerIntegrationTest {
         assertNotNull(receivedRole);
 
         getAllRoles();
+
         deleteRolebyId(role.getId());
     }
 
