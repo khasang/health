@@ -22,11 +22,11 @@ import org.health.entity.ResultExamination;
 import org.health.entity.Role;
 import org.health.entity.User;
 import org.health.model.Dog;
+import org.health.model.PasswordEncoderData;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -74,7 +74,10 @@ public class AppConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoderData passwordEncoderData() {
+        PasswordEncoderData passwordEncoderData = new PasswordEncoderData();
+        passwordEncoderData.setPasswordEncoder(new BCryptPasswordEncoder());
+
+        return passwordEncoderData;
     }
 }

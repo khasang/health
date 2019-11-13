@@ -2,8 +2,9 @@ package org.health.service;
 
 import java.util.*;
 
-import org.health.dto.*;
+import org.health.dto.UserDto;
 import org.health.entity.*;
+import org.health.model.ResponseServiceUser;
 
 public interface UserService {
     /**
@@ -12,7 +13,7 @@ public interface UserService {
      * @param user - user for adding
      * @return created user
      */
-    User addUser(User user);
+    ResponseServiceUser addUser(User user);
 
     /**
      * method required for updating user

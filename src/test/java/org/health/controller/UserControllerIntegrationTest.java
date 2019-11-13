@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import org.health.dto.*;
+import org.health.dto.ResponseUserServiceDto;
+import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.junit.*;
 import org.springframework.core.*;
@@ -31,32 +32,37 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void test() {
-        User user_1 = testAdd(createUser(
+        User user_1 = createUser(
                 "Ivan",
                 "Ivanov",
                 "Ivanovich",
                 "Ivan123",
                 "qwerty1",
-                2));
-        User user_2 = testAdd(createUser(
+                2);
+        User user_2 = createUser(
                 "Petr",
                 "Petriv",
                 "Petrovich",
-                "Petr123",
+                "Petr456",
                 "qwerty2",
-                2));
+                1);
 
-        testGetDto(user_1.getId());
-        testGetDto(user_2.getId());
+        ResponseUserServiceDto responseUserServiceDto_1 = testAdd(user_1);
+        ResponseUserServiceDto responseUserServiceDto_2 = testAdd(user_2);
+
+        testGetDto(responseUserServiceDto_1.getUserDto().getId());
+        testGetDto(responseUserServiceDto_2.getUserDto().getId());
 
         testGetAll();
 
+        // TODO не проходит тест, т.к. предположение не полные данные получение UserDto
         testUpdate(user_1, "Sidorov");
+        testUpdate(user_2, "Vasilev");
 
         testDelete(user_1);
         testDelete(user_2);
     }
-    
+
     private void testDelete(User user) {
         entity = new HttpEntity<>(user, headers);
         template = new RestTemplate();
@@ -96,7 +102,8 @@ public class UserControllerIntegrationTest {
                 ROOT + ALL,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<User>>() {},
+                new ParameterizedTypeReference<List<User>>() {
+                },
                 Collections.emptyList()
         ).getBody();
 
@@ -121,26 +128,28 @@ public class UserControllerIntegrationTest {
         assertEquals(id, userDto.getId());
     }
 
-    private User testAdd(User user) {
-        entity = new HttpEntity<>(user, headers);
-        template = new RestTemplate();
+    private ResponseUserServiceDto testAdd(User user) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        HttpEntity<User> entity = new HttpEntity<>(user, headers);
 
-        User createdUser = template.exchange(
+        RestTemplate template = new RestTemplate();
+        ResponseUserServiceDto responseUserServiceDto = template.exchange(
                 ROOT + ADD,
                 HttpMethod.POST,
                 entity,
-                User.class
+                ResponseUserServiceDto.class
         ).getBody();
 
-        assertNotNull(createdUser);
-        assertEquals(user.getFirstName(), createdUser.getFirstName());
-        assertEquals(user.getLastName(), createdUser.getLastName());
-        assertEquals(user.getPatronymic(), createdUser.getPatronymic());
-        assertEquals(user.getLogin(), createdUser.getLogin());
-        assertEquals(user.getPassword(), createdUser.getPassword());
-        assertEquals(user.getRoleId(), createdUser.getRoleId());
+        assertNotNull(responseUserServiceDto);
+        assertEquals(user.getFirstName(), responseUserServiceDto.getUserDto().getFirstName());
+        assertEquals(user.getLastName(), responseUserServiceDto.getUserDto().getLastName());
+        assertEquals(user.getPatronymic(), responseUserServiceDto.getUserDto().getPatronymic());
+        assertEquals(user.getLogin(), responseUserServiceDto.getUserDto().getLogin());
+        assertTrue(responseUserServiceDto.isRequestSave());
 
-        return createdUser;
+        return responseUserServiceDto;
+//        return new ResponseUserServiceDto();
     }
 
     private User createUser(String firstName, String lastName, String patronymic, String login, String pass, long roleId) {

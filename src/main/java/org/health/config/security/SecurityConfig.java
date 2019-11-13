@@ -1,5 +1,6 @@
 package org.health.config.security;
 
+import org.health.model.PasswordEncoderData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,12 +8,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableGlobalAuthentication
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoderData passwordEncoderData;
     private UserDetailsService userDetailsService;
 
     @Override
@@ -28,12 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(this.passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(this.passwordEncoderData.getPasswordEncoder());
     }
 
     @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    public void setPasswordEncoderData(PasswordEncoderData passwordEncoderData) {
+        this.passwordEncoderData = passwordEncoderData;
     }
 
     @Autowired

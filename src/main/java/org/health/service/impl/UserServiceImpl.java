@@ -3,8 +3,9 @@ package org.health.service.impl;
 import java.util.*;
 
 import org.health.dao.*;
-import org.health.dto.*;
+import org.health.dto.UserDto;
 import org.health.entity.*;
+import org.health.model.ResponseServiceUser;
 import org.health.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -15,18 +16,26 @@ public class UserServiceImpl implements UserService {
     private UserDto userDto;
 
     /**
-     * Перед записью данных, проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи
+     * Перед записью данных, проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи и
+     * возвращаем данные по некорректному полю
      *
      * @param user - user for adding
-     * @return
+     * @return ResponseUserService
      */
     @Override
-    public User addUser(User user) {
-        if (!user.checkingOnEmptinessFields()) {
-            return user;
+    public ResponseServiceUser addUser(User user) {
+        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
+        // Проверяем состояние полей, если проверку не прошли запись отменить
+        if (!responseServiceUser.validationOnEmptinessFields(user)) {
+            return responseServiceUser;
         }
 
-        return userDao.addEntity(user);
+        // Переключаем состояние объекта ResponseUserService, проверка пройдена
+        responseServiceUser.requestSave();
+        // передаем данные на запись, далее получаем и проверяем состоние полей
+        responseServiceUser.validationOnEmptinessFields(userDao.addEntity(user));
+
+        return responseServiceUser;
     }
 
     @Override

@@ -11,7 +11,7 @@ public class UserDto {
     private String patronymic;
     private String login;
     private long roleId;
-    
+
     public UserDto getUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());

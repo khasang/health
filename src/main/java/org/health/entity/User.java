@@ -59,33 +59,6 @@ public class User implements Cloneable {
         return new User(clone);
     }
 
-    /**
-     * Проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи
-     *
-     * @return
-     */
-    public boolean checkingOnEmptinessFields() {
-        try {
-            this.checkingOnEmptiness(this.firstName);
-            this.checkingOnEmptiness(this.lastName);
-            this.checkingOnEmptiness(this.patronymic);
-            this.checkingOnEmptiness(this.login);
-            this.checkingOnEmptiness(this.password);
-            this.checkingOnEmptiness(String.valueOf(this.roleId));
-
-        } catch (RuntimeException e) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private void checkingOnEmptiness(String text) throws RuntimeException {
-        if (text.equals("")) {
-            throw new RuntimeException();
-        }
-    }
-
     public long getId() {
         return id;
     }
