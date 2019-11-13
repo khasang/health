@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ public class AppController {
     // http://localhost:8080/
     @RequestMapping("/hello/{name}")
     public String getHelloPage(@PathVariable("name") String name, Model model){
-        model.addAttribute("name", name);
+        model.addAttribute("login", name);
         return "hello";
     }
 
@@ -50,12 +51,8 @@ public class AppController {
 
     @RequestMapping("/")
     public String getName(Model model) {
-        model.addAttribute("name", cat.getName());
-        model.addAttribute("name2", rabbit.getName());
-        model.addAttribute("name3", dog.getName());
-        model.addAttribute("description", dog.getDescription());
-        model.addAttribute("name4", animal.getInfo());
-        return "cat";
+        model.addAttribute("login", SecurityContextHolder.getContext().getAuthentication().getName());
+        return "hello";
     }
 
     @Autowired

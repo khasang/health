@@ -19,7 +19,7 @@ public class ResultExaminationServiceImpl implements ResultExaminationService {
 
     @Override
     public ResultExamination updateResultExamination(ResultExamination resultExamination) {
-        return resultExaminationDao.updateEntity(resultExamination);
+        return resultExaminationDao.updateEntity(resultExamination, resultExamination.getId());
     }
 
     @Override

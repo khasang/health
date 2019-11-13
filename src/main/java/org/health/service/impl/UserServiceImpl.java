@@ -13,7 +13,6 @@ import org.springframework.stereotype.*;
 @Service("userService")
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
-    private UserDto userDto;
 
     /**
      * Перед записью данных, проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи и
@@ -39,32 +38,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        return userDao.updateEntity(user);
+    public ResponseServiceUser updateUser(UserDto userDto) {
+        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
+        User user = userDao.getEntity(userDto.getId());
+
+        if (!responseServiceUser.validationOnEmptinessFields(user)) {
+            return responseServiceUser;
+        }
+
+        // Переключаем состояние объекта ResponseUserService, проверка пройдена
+        responseServiceUser.requestSave();
+        // Получаем объект по id
+        User userByIdDto = userDto.create(userDao.getEntity(userDto.getId()));
+        // передаем данные на запись, далее получаем и проверяем состоние полей
+        responseServiceUser.validationOnEmptinessFields(userDao.updateEntity(userByIdDto, userByIdDto.getId()));
+
+        return responseServiceUser;
     }
 
     @Override
     public UserDto getUser(long id) {
-        return userDto.getUserDto(userDao.getEntity(id));
+        return new UserDto(userDao.getEntity(id));
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllEntities();
+    public List<UserDto> getAllUsers() {
+        List<UserDto> userDtoList = new ArrayList<>();
+        userDao.getAllEntities().iterator().forEachRemaining(user -> userDtoList.add(new UserDto(user)));
+
+        return userDtoList;
     }
 
     @Override
-    public User deleteUser(long id) {
-        return userDao.deleteEntity(userDao.getEntity(id));
+    public ResponseServiceUser deleteUser(long id) {
+        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
+        responseServiceUser.requestSave();
+        // передаем данные на запись, далее получаем и проверяем состоние полей
+        responseServiceUser.validationOnEmptinessFields(userDao.deleteEntity(userDao.getEntity(id)));
+        return responseServiceUser;
     }
 
     @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
-    }
-
-    @Autowired
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
     }
 }

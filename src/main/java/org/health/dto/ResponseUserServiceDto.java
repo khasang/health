@@ -2,7 +2,6 @@ package org.health.dto;
 
 import org.health.model.ResponseServiceUser;
 
-
 public class ResponseUserServiceDto {
     private boolean requestSave;
     private String textNoValidation;
@@ -12,7 +11,7 @@ public class ResponseUserServiceDto {
     }
 
     public ResponseUserServiceDto(ResponseServiceUser responseServiceUser) {
-        this.userDto = new UserDto().getUserDto(responseServiceUser.getUser());
+        this.userDto = new UserDto(responseServiceUser.getUser());
         this.textNoValidation = responseServiceUser.getTextNoValidation();
         this.requestSave = responseServiceUser.isRequestSave();
     }

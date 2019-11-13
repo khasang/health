@@ -2,6 +2,7 @@ package org.health.service;
 
 import java.util.*;
 
+import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.health.model.ResponseServiceUser;
@@ -18,10 +19,10 @@ public interface UserService {
     /**
      * method required for updating user
      *
-     * @param user - user for update
+     * @param userDto - user for update
      * @return updated user
      */
-    User updateUser(User user);
+    ResponseServiceUser updateUser(UserDto userDto);
 
     /**
      * method required for getting user by id
@@ -36,7 +37,7 @@ public interface UserService {
      *
      * @return all users
      */
-    List<User> getAllUsers();
+    List<UserDto> getAllUsers();
 
     /**
      * method required for deletion user by id
@@ -44,5 +45,5 @@ public interface UserService {
      * @param id - id user got delete
      * @return deleted user by id
      */
-    User deleteUser(long id);
+    ResponseServiceUser deleteUser(long id);
 }

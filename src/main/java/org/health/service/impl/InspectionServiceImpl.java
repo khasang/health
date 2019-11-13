@@ -27,7 +27,7 @@ public class InspectionServiceImpl implements InspectionService {
 
     @Override
     public Inspection updateInspection(Inspection inspection) {
-        return inspectionDao.updateEntity(inspection);
+        return inspectionDao.updateEntity(inspection, inspection.getId());
     }
 
     @Override

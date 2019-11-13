@@ -34,6 +34,9 @@ public class RoleControllerIntegrationTest {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Role receivedRole = responseEntity.getBody();
         assertNotNull(receivedRole);
+
+        getAllRoles();
+        deleteRolebyId(role.getId());
     }
 
     private Role createRole() {
@@ -41,16 +44,7 @@ public class RoleControllerIntegrationTest {
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 
         Role role = prefillRole();
-
-        List<Role> allRoles = getAllRoles();
-        for (Role r : allRoles) {
-            if (r.equals(role)) {
-                deleteRolebyId(r.getId());
-            }
-        }
-
         HttpEntity<Role> entity = new HttpEntity<>(role, headers);
-
         RestTemplate template = new RestTemplate();
         Role createdRole = template.exchange(
                 ROOT + ADD,
@@ -58,6 +52,7 @@ public class RoleControllerIntegrationTest {
                 entity,
                 Role.class
         ).getBody();
+
         assertNotNull(createdRole);
         assertEquals("ROLE_TEST", createdRole.getName());
 
@@ -79,22 +74,24 @@ public class RoleControllerIntegrationTest {
                         Role[].class);
 
         List<Role> roleList = Arrays.asList(response.getBody());
+        assertNotNull(roleList);
         return roleList;
     }
 
     private void deleteRolebyId(long id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        Role role = new Role();
 
+        Role role = prefillRole();
         HttpEntity<Role> entity = new HttpEntity<>(role, headers);
-
         RestTemplate template = new RestTemplate();
-        template.exchange(
+        Role roleDel = template.exchange(
                 ROOT + DELETE + "/" + id,
                 HttpMethod.DELETE,
                 entity,
                 Role.class
-        );
+        ).getBody();
+
+        assertNotNull(roleDel);
     }
 }

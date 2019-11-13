@@ -38,7 +38,7 @@ public class User implements Cloneable {
     /**
      * Метод клонирует объект - копирование всех полей
      *
-     * @param user
+     * @param user клонируемый объект
      * @author ZverikRS
      */
     public User(User user) {

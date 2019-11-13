@@ -7,6 +7,7 @@ import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.health.model.PasswordEncoderData;
+import org.health.model.ResponseServiceUser;
 import org.health.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -30,8 +31,8 @@ public class UserController {
     @ApiOperation("Update user")
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+    public ResponseUserServiceDto updateUser(@RequestBody UserDto userDto) {
+        return new ResponseUserServiceDto(userService.updateUser(userDto));
     }
 
     @ApiOperation("Get user by id")
@@ -44,14 +45,14 @@ public class UserController {
     @ApiOperation("Get all users")
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<User> getAllEmployees() {
+    public List<UserDto> getAllEmployees() {
         return userService.getAllUsers();
     }
 
     @ApiOperation("Delete user by id")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public User deleteUserById(@PathVariable("id") long id) {
+    public ResponseServiceUser deleteUserById(@PathVariable("id") long id) {
         return userService.deleteUser(id);
     }
 

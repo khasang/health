@@ -15,10 +15,10 @@ public interface BasicDao<T> {
     /**
      * method required for updating entity
      *
-     * @param entity - entity for update
+     * @param id - entity for update
      * @return updated entity
      */
-    T updateEntity(T entity);
+    T updateEntity(T entity, long id);
 
     /**
      * method required for getting entity by id

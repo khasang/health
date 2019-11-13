@@ -9,6 +9,8 @@ public class LoginController {
 
     @RequestMapping()
     public String getLoginPage() {
+        // TODO сбросить данные пользователя
+
         return "login";
     }
 }

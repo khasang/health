@@ -3,10 +3,12 @@ package org.health.controller;
 import static org.junit.Assert.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
+import org.health.model.ResponseServiceUser;
 import org.junit.*;
 import org.springframework.core.*;
 import org.springframework.http.*;
@@ -22,7 +24,6 @@ public class UserControllerIntegrationTest {
 
     private HttpHeaders headers;
     private RestTemplate template;
-    private HttpEntity<User> entity;
 
     @Before
     public void init() {
@@ -53,62 +54,70 @@ public class UserControllerIntegrationTest {
         testGetDto(responseUserServiceDto_1.getUserDto().getId());
         testGetDto(responseUserServiceDto_2.getUserDto().getId());
 
-        testGetAll();
+        testGetAll(responseUserServiceDto_1, responseUserServiceDto_2);
 
-        // TODO не проходит тест, т.к. предположение не полные данные получение UserDto
-        testUpdate(user_1, "Sidorov");
-        testUpdate(user_2, "Vasilev");
+        testUpdate(responseUserServiceDto_1.getUserDto(), "Sidorov");
+        testUpdate(responseUserServiceDto_2.getUserDto(), "Vasilev");
 
-        testDelete(user_1);
-        testDelete(user_2);
+        testDelete(responseUserServiceDto_1.getUserDto());
+        testDelete(responseUserServiceDto_2.getUserDto());
     }
 
-    private void testDelete(User user) {
-        entity = new HttpEntity<>(user, headers);
-        template = new RestTemplate();
-
-        User remoteUser = template.exchange(
+    private void testDelete(UserDto userDto) {
+        HttpEntity<UserDto> entity = new HttpEntity<>(userDto, headers);
+        ResponseServiceUser remoteResponseServiceUser = template.exchange(
                 ROOT + DELETE + "/{id}",
                 HttpMethod.DELETE,
                 entity,
-                User.class,
-                user.getId()
+                ResponseServiceUser.class,
+                userDto.getId()
         ).getBody();
 
-        assertNotNull(remoteUser);
-        assertEquals(user.getId(), remoteUser.getId());
+        assertNotNull(remoteResponseServiceUser);
+        assertEquals(userDto.getId(), remoteResponseServiceUser.getUser().getId());
     }
 
-    private void testUpdate(User user, String lastName) {
-        user.setLastName(lastName);
+    // TODO можно поменять персональные данные без учета пароля
+    private void testUpdate(UserDto userDto, String lastName) {
+        userDto.setLastName(lastName);
 
-        entity = new HttpEntity<>(user, headers);
-        template = new RestTemplate();
-
-        User updateUser = template.exchange(
+        HttpEntity<UserDto> entity = new HttpEntity<>(userDto, headers);
+        ResponseUserServiceDto updateResponseUserServiceDto = template.exchange(
                 ROOT + UPDATE,
                 HttpMethod.PUT,
                 entity,
-                User.class
+                ResponseUserServiceDto.class
         ).getBody();
 
-        assertNotNull(updateUser);
-        assertEquals(lastName, updateUser.getLastName());
+        assertNotNull(updateResponseUserServiceDto);
+        assertEquals(lastName, updateResponseUserServiceDto.getUserDto().getLastName());
     }
 
-    private void testGetAll() {
+    private void testGetAll(ResponseUserServiceDto... responseUserServiceDtos) {
         template = new RestTemplate();
-        List<User> users = template.exchange(
+        List<UserDto> usersDtos = template.exchange(
                 ROOT + ALL,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<User>>() {
+                new ParameterizedTypeReference<List<UserDto>>() {
                 },
                 Collections.emptyList()
         ).getBody();
 
-        assertNotNull(users);
-        assertTrue(users.size() > 2); // admin and user
+        assertNotNull(usersDtos);
+
+        AtomicInteger i = new AtomicInteger(responseUserServiceDtos.length);
+        List<ResponseUserServiceDto> userServiceDtos = new ArrayList<>(Arrays.asList(responseUserServiceDtos));
+        userServiceDtos.iterator().forEachRemaining(p -> {
+            for (UserDto userDto : usersDtos) {
+                if (p.getUserDto().getId() == userDto.getId()) {
+                    i.getAndDecrement();
+                    break;
+                }
+            }
+        });
+
+        assertEquals(0, i.get()); // admin and user
     }
 
     private void testGetDto(long id) {
@@ -149,7 +158,6 @@ public class UserControllerIntegrationTest {
         assertTrue(responseUserServiceDto.isRequestSave());
 
         return responseUserServiceDto;
-//        return new ResponseUserServiceDto();
     }
 
     private User createUser(String firstName, String lastName, String patronymic, String login, String pass, long roleId) {

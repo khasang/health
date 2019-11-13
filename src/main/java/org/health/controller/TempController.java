@@ -16,7 +16,7 @@ public class TempController {
         return "admin";
     }
 
-    @RequestMapping("/user")
+    @RequestMapping("/users")
     public String getUserPage() {
         return "user";
     }

@@ -12,16 +12,27 @@ public class UserDto {
     private String login;
     private long roleId;
 
-    public UserDto getUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setPatronymic(user.getPatronymic());
-        userDto.setLogin(user.getLogin());
-        userDto.setRoleId(user.getRoleId());
+    public UserDto() {
+    }
 
-        return userDto;
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.patronymic = user.getPatronymic();
+        this.login = user.getLogin();
+        this.roleId = user.getRoleId();
+    }
+
+    public User create(User user) {
+        user.setId(id);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPatronymic(patronymic);
+        user.setLogin(login);
+        user.setRoleId(roleId);
+
+        return user;
     }
 
     public long getId() {
