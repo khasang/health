@@ -3,10 +3,13 @@ package org.health.controller;
 import org.health.entity.Inspection;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public class InspectionControllerIntegrationTest {
 
@@ -31,6 +34,56 @@ public class InspectionControllerIntegrationTest {
         );
         Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         Assert.assertNotNull(responseEntity);
+    }
+
+    @Test
+    public void testUpdate() {
+        Inspection inspection = createInspection();
+        inspection.setPrice(5000);
+        inspection.setRoom(111);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        RestTemplate template = new RestTemplate();
+        HttpEntity<Inspection> entity = new HttpEntity<>(inspection, headers);
+        Inspection updatedInspection = template.exchange(
+                ROOT + UPDATE,
+                HttpMethod.PUT,
+                entity,
+                Inspection.class
+        ).getBody();
+        Assert.assertEquals(updatedInspection.getId(), inspection.getId());
+        Assert.assertEquals(updatedInspection.getDuration(), inspection.getDuration());
+        Assert.assertEquals(updatedInspection.getPrice(), inspection.getPrice());
+        Assert.assertEquals(updatedInspection.getRoom(), inspection.getRoom());
+        Assert.assertEquals(updatedInspection.getTime(), inspection.getTime());
+    }
+
+    @Test
+    public void testDelete() {
+        Inspection inspection = createInspection();
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<Inspection> responseEntity = template.exchange(
+                ROOT + DELETE + "/{id}",
+                HttpMethod.DELETE,
+                null,
+                Inspection.class,
+                inspection.getId()
+        );
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    }
+
+    @Test
+    public void testGetAll() {
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<List<Inspection>> responseEntity = template.exchange(
+                ROOT + ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Inspection>>() {},
+                Collections.emptyList()
+        );
+        Assert.assertNotNull(responseEntity);
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     private Inspection createInspection() {
