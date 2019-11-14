@@ -27,7 +27,6 @@ public class DataConfig {
         dataSource.setUrl(environment.getRequiredProperty("jdbc.postgresql.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.postgresql.username"));
         dataSource.setPassword(environment.getRequiredProperty("jdbc.postgresql.password"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.postgresql.password"));
         return dataSource;
     }
 

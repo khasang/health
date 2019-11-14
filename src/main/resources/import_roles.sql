@@ -1,0 +1,1 @@
+INSERT INTO public.roles (id, role_name, description) VALUES (1,'admin', 'admin'), (2,'user', 'user') ON CONFLICT (id) DO NOTHING;
