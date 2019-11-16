@@ -1,12 +1,13 @@
 package org.health.entity;
 
+import org.health.dao.IGettingID;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "employees")
-public class Employee {
+public class Employee implements IGettingID {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -23,6 +24,7 @@ public class Employee {
         this.carList = carList;
     }
 
+    @Override
     public long getId() {
         return id;
     }

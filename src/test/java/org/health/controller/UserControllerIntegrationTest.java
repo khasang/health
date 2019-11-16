@@ -1,10 +1,8 @@
 package org.health.controller;
 
 import static org.junit.Assert.*;
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
@@ -77,7 +75,6 @@ public class UserControllerIntegrationTest {
         assertEquals(userDto.getId(), remoteResponseServiceUser.getUser().getId());
     }
 
-    // TODO можно поменять персональные данные без учета пароля
     private void testUpdate(UserDto userDto, String lastName) {
         userDto.setLastName(lastName);
 
@@ -155,7 +152,8 @@ public class UserControllerIntegrationTest {
         assertEquals(user.getLastName(), responseUserServiceDto.getUserDto().getLastName());
         assertEquals(user.getPatronymic(), responseUserServiceDto.getUserDto().getPatronymic());
         assertEquals(user.getLogin(), responseUserServiceDto.getUserDto().getLogin());
-        assertTrue(responseUserServiceDto.isRequestSave());
+        assertTrue(responseUserServiceDto.isValidation());
+        assertEquals(responseUserServiceDto.getMessage(), "Ok");
 
         return responseUserServiceDto;
     }

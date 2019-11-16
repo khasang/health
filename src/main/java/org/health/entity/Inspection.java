@@ -2,6 +2,7 @@ package org.health.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.health.dao.IGettingID;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "inspections")
 @ApiModel(value = "Inspection", description = "Class representing an inspection of patient.")
-public class Inspection {
+public class Inspection implements IGettingID {
 
     /** Field inspection id.*/
     @Id
@@ -41,6 +42,7 @@ public class Inspection {
     private int price;
 
     /** Field id getter.*/
+    @Override
     public long getId() {
         return id;
     }

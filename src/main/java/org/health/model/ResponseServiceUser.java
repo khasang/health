@@ -3,39 +3,42 @@ package org.health.model;
 import org.health.entity.User;
 
 /**
- * Объект проверяется перед записью на начие заполнения всех полей
+ * <p>The object is checked before writing to the beginning of filling in all fields</p>
  */
 public class ResponseServiceUser {
-    private boolean requestSave;
-    private String textNoValidation = "NoValidation";
+    private boolean validation = true;
+    private String message = "No check Status of fields";
     private User user;
 
     public ResponseServiceUser() {
-
     }
 
-    public boolean validationOnEmptinessFields(User user) {
+    public ResponseServiceUser(User user) {
         this.user = new User(user);
+    }
 
+    public boolean checkStatusFields() {
         try {
-            textNoValidation = "FirstName";
+            message = "No data first name";
             this.checkingOnEmptiness(user.getFirstName());
-            textNoValidation = "LastName";
+            message = "No data last name";
             this.checkingOnEmptiness(user.getLastName());
-            textNoValidation = "Patronymic";
+            message = "No data patronymic";
             this.checkingOnEmptiness(user.getPatronymic());
-            textNoValidation = "Login";
+            message = "No data login";
             this.checkingOnEmptiness(user.getLogin());
-            textNoValidation = "Password";
+            message = "No data password";
             this.checkingOnEmptiness(user.getPassword());
-            textNoValidation = "RoleId";
+            message = "No data role id";
             this.checkingOnEmptiness(String.valueOf(user.getRoleId()));
 
         } catch (RuntimeException e) {
+            this.validation = false;
             return false;
         }
 
-        textNoValidation = "Ok";
+        message = "Ok";
+        this.validation = true;
         return true;
     }
 
@@ -45,23 +48,23 @@ public class ResponseServiceUser {
         }
     }
 
-    public void requestSave() {
-        this.requestSave = true;
-    }
-
-    public String getTextNoValidation() {
-        return textNoValidation;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isRequestSave() {
-        return this.requestSave;
-    }
-
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isValidation() {
+        return this.validation;
     }
 }

@@ -3,8 +3,8 @@ package org.health.dto;
 import org.health.model.ResponseServiceUser;
 
 public class ResponseUserServiceDto {
-    private boolean requestSave;
-    private String textNoValidation;
+    private boolean validation;
+    private String message;
     private UserDto userDto;
 
     public ResponseUserServiceDto() {
@@ -12,28 +12,28 @@ public class ResponseUserServiceDto {
 
     public ResponseUserServiceDto(ResponseServiceUser responseServiceUser) {
         this.userDto = new UserDto(responseServiceUser.getUser());
-        this.textNoValidation = responseServiceUser.getTextNoValidation();
-        this.requestSave = responseServiceUser.isRequestSave();
+        this.message = responseServiceUser.getMessage();
+        this.validation = responseServiceUser.isValidation();
     }
 
     public UserDto getUserDto() {
         return userDto;
     }
 
-    public String getTextNoValidation() {
-        return textNoValidation;
+    public String getMessage() {
+        return message;
     }
 
-    public boolean isRequestSave() {
-        return requestSave;
+    public boolean isValidation() {
+        return validation;
     }
 
-    public void setRequestSave(boolean requestSave) {
-        this.requestSave = requestSave;
+    public void setValidation(boolean validation) {
+        this.validation = validation;
     }
 
-    public void setTextNoValidation(String textNoValidation) {
-        this.textNoValidation = textNoValidation;
+    public void setMessage(String textNoValidation) {
+        this.message = textNoValidation;
     }
 
     public void setUserDto(UserDto userDto) {

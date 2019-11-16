@@ -1,5 +1,7 @@
 package org.health.entity;
 
+import org.health.dao.IGettingID;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -8,7 +10,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "examinations")
-public class Examination {
+public class Examination implements IGettingID {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -19,6 +21,7 @@ public class Examination {
     public Examination() {
     }
 
+    @Override
     public long getId() {
         return id;
     }

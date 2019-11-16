@@ -1,8 +1,6 @@
 package org.health.service;
 
 import java.util.*;
-
-import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.health.model.ResponseServiceUser;

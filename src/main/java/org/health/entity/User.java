@@ -3,11 +3,12 @@ package org.health.entity;
 import javax.persistence.*;
 
 import io.swagger.annotations.*;
+import org.health.dao.IGettingID;
 
 @ApiModel(value = "User", description = "Class representing the user.")
 @Entity
 @Table(name = "users")
-public class User implements Cloneable {
+public class User implements IGettingID, Cloneable {
     @ApiModelProperty(notes = "Unique identifier", required = true, example = "1", position = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -59,6 +60,7 @@ public class User implements Cloneable {
         return new User(clone);
     }
 
+    @Override
     public long getId() {
         return id;
     }

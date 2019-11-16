@@ -19,7 +19,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public Horse updateHorse(Horse horse) {
-        return horseDao.updateEntity(horse, horse.getId());
+        return horseDao.updateEntity(horse);
     }
 
     @Override

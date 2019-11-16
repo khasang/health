@@ -24,7 +24,7 @@ public class UserDto {
         this.roleId = user.getRoleId();
     }
 
-    public User create(User user) {
+    public User update(User user) {
         user.setId(id);
         user.setFirstName(firstName);
         user.setLastName(lastName);

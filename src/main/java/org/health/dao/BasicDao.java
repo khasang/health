@@ -3,7 +3,7 @@ package org.health.dao;
 
 import java.util.List;
 
-public interface BasicDao<T> {
+public interface BasicDao<T extends IGettingID> {
     /**
      * method required for adding entity
      *
@@ -15,10 +15,10 @@ public interface BasicDao<T> {
     /**
      * method required for updating entity
      *
-     * @param id - entity for update
+     * @param entity - entity for update
      * @return updated entity
      */
-    T updateEntity(T entity, long id);
+    T updateEntity(T entity);
 
     /**
      * method required for getting entity by id

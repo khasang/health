@@ -1,59 +1,63 @@
 package org.health.service.impl;
 
 import java.util.*;
-
 import org.health.dao.*;
 import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.health.model.ResponseServiceUser;
 import org.health.service.*;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
+    private SessionFactory sessionFactory;
 
     /**
-     * Перед записью данных, проверяем наличие заполненных всех полей, если хотябя одно поле пустое, отмена записи и
-     * возвращаем данные по некорректному полю
+     * <p>Before writing the data, check the presence of all fields filled, if at least one field is empty, cancel
+     * the record and return the data on the incorrect field </p>
      *
      * @param user - user for adding
      * @return ResponseUserService
      */
     @Override
     public ResponseServiceUser addUser(User user) {
-        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
-        // Проверяем состояние полей, если проверку не прошли запись отменить
-        if (!responseServiceUser.validationOnEmptinessFields(user)) {
+        ResponseServiceUser responseServiceUser = new ResponseServiceUser(user);
+        // Check the status of the fields, if the check did not pass the record.
+        if (!responseServiceUser.checkStatusFields()) {
             return responseServiceUser;
         }
 
-        // Переключаем состояние объекта ResponseUserService, проверка пройдена
-        responseServiceUser.requestSave();
-        // передаем данные на запись, далее получаем и проверяем состоние полей
-        responseServiceUser.validationOnEmptinessFields(userDao.addEntity(user));
+        // Checking the presence of the transmitted login
+        if (this.isLoginEmpty(user)) {
+            responseServiceUser.setMessage("Login exists");
+            responseServiceUser.setUser(user);
+            return responseServiceUser;
+        }
 
+        responseServiceUser.setUser(userDao.addEntity(user));
         return responseServiceUser;
+    }
+
+    private boolean isLoginEmpty(User user) {
+        CriteriaBuilder builder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<User> userLoginCriteria = builder.createQuery(User.class);
+        Root<User> userLoginRoot = userLoginCriteria.from(User.class);
+        userLoginCriteria.select(userLoginRoot);
+        userLoginCriteria.where(builder.equal(userLoginRoot.get("login"), user.getLogin()));
+        return sessionFactory.openSession().createQuery(userLoginCriteria).getResultList().size() > 0;
     }
 
     @Override
     public ResponseServiceUser updateUser(UserDto userDto) {
-        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
-        User user = userDao.getEntity(userDto.getId());
-
-        if (!responseServiceUser.validationOnEmptinessFields(user)) {
-            return responseServiceUser;
-        }
-
-        // Переключаем состояние объекта ResponseUserService, проверка пройдена
-        responseServiceUser.requestSave();
-        // Получаем объект по id
-        User userByIdDto = userDto.create(userDao.getEntity(userDto.getId()));
-        // передаем данные на запись, далее получаем и проверяем состоние полей
-        responseServiceUser.validationOnEmptinessFields(userDao.updateEntity(userByIdDto, userByIdDto.getId()));
-
-        return responseServiceUser;
+        //  get user by id and update
+        User userByIdDto = userDto.update(userDao.getEntity(userDto.getId()));
+        return new ResponseServiceUser(userDao.updateEntity(userByIdDto));
     }
 
     @Override
@@ -71,15 +75,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseServiceUser deleteUser(long id) {
-        ResponseServiceUser responseServiceUser = new ResponseServiceUser();
-        responseServiceUser.requestSave();
-        // передаем данные на запись, далее получаем и проверяем состоние полей
-        responseServiceUser.validationOnEmptinessFields(userDao.deleteEntity(userDao.getEntity(id)));
-        return responseServiceUser;
+        return new ResponseServiceUser(userDao.deleteEntity(userDao.getEntity(id)));
     }
 
     @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
+    }
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

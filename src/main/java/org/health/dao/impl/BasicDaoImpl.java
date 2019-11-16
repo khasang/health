@@ -1,10 +1,10 @@
 package org.health.dao.impl;
 
 import org.health.dao.BasicDao;
+import org.health.dao.IGettingID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public class BasicDaoImpl<T> implements BasicDao<T> {
+public class BasicDaoImpl<T extends IGettingID> implements BasicDao<T> {
     private final Class<T> entityClass;
     protected SessionFactory sessionFactory;
 
@@ -23,14 +23,13 @@ public class BasicDaoImpl<T> implements BasicDao<T> {
     @Override
     public T addEntity(T entity) {
         getSession().save(entity);
-        return entity;
+        return getSession().get(entityClass, entity.getId());
     }
 
     @Override
-    public T updateEntity(T entity, long id) {
+    public T updateEntity(T entity) {
         getSession().update(entity);
-        T updateT = getSession().get(entityClass, id);
-        return updateT;
+        return getSession().get(entityClass, entity.getId());
     }
 
     @Override
@@ -43,7 +42,6 @@ public class BasicDaoImpl<T> implements BasicDao<T> {
         CriteriaBuilder builder = sessionFactory.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = builder.createQuery(entityClass);
         Root<T> root = criteriaQuery.from(entityClass);
-
         criteriaQuery.select(root);
         return getSession().createQuery(criteriaQuery).list();
     }

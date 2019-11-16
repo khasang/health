@@ -19,7 +19,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 
     @Override
     public Examination updateExamination(Examination examination) {
-        return examinationDao.updateEntity(examination, examination.getId());
+        return examinationDao.updateEntity(examination);
     }
 
     @Override
