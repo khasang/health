@@ -41,7 +41,7 @@ public class UserController {
     @ApiOperation("Get all users")
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<User> getAllEmployees() {
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
