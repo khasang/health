@@ -28,36 +28,36 @@ public class InspectionController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    @ApiOperation("Creates new Inspection")
+    @ApiOperation(value = "Creates new Inspection", response = Inspection.class)
     public Inspection addInspection(@RequestBody Inspection inspection) {
         return inspectionService.addInspection(inspection);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    @ApiOperation("Updates inspection")
+    @ApiOperation(value = "Updates inspection", response = Inspection.class)
     public Inspection updateInspection(@RequestBody Inspection inspection) {
         return inspectionService.updateInspection(inspection);
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    @ApiOperation("Get inspection by id")
-    public Inspection getInspection(@ApiParam("Id of inspection to get. Cannot be empty") @PathVariable long id) {
+    @ApiOperation(value = "Get inspection by id", notes = "Provide an id to get specific inspection", response = Inspection.class)
+    public Inspection getInspection(@ApiParam(value = "Id of inspection to get. Cannot be empty", required = true) @PathVariable long id) {
         return inspectionService.getInspection(id);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    @ApiOperation("Get all inspections list")
+    @ApiOperation(value = "Get all inspections list", response = Inspection.class, responseContainer = "List")
     public List<Inspection> getAllInspections() {
         return inspectionService.getAllInspections();
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    @ApiOperation("Deletes inspection by id")
-    public Inspection deleteInspection(@ApiParam("Id of inspection to be deleted. Cannot be empty") @PathVariable long id) {
+    @ApiOperation(value = "Deletes inspection by id", notes = "Provide an id to delete specific inspection", response = Inspection.class)
+    public Inspection deleteInspection(@ApiParam(value = "Id of inspection to be deleted. Cannot be empty", required = true) @PathVariable long id) {
         return inspectionService.deleteInspection(id);
     }
 
@@ -65,5 +65,4 @@ public class InspectionController {
     public void setInspectionService(InspectionService inspectionService) {
         this.inspectionService = inspectionService;
     }
-
 }

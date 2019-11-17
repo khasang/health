@@ -34,10 +34,9 @@ public class InspectionController {}
 
 ### @ApiOperation
 <b>Example:</b><br/>
-@ApiOperation("Creates new Inspection")<br/>
-public Inspection addInspection(@RequestBody Inspection inspection) {}
+@ApiOperation(value = "Get inspection by id", notes = "Provide an id to get specific inspection", response = Inspection.class)<br/>
+public Inspection getInspection(@ApiParam(value = "Id of inspection to get. Cannot be empty", required = true) @PathVariable long id) {
 
 ### @ApiParam
 <b>Example:</b><br/>
-public Inspection getInspection(@ApiParam("Id of inspection to get. Cannot be empty") @PathVariable long id) {}
-
+public Inspection getInspection(@ApiParam(value = "Id of inspection to get. Cannot be empty", required = true) @PathVariable long id) {}
