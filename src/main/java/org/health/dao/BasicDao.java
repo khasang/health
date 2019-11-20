@@ -1,9 +1,8 @@
 package org.health.dao;
 
-
 import java.util.List;
 
-public interface BasicDao<T extends IGettingID> {
+public interface BasicDao<T> {
     /**
      * method required for adding entity
      *

@@ -1,14 +1,12 @@
 package org.health.entity;
 
-import org.health.dao.IGettingID;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "horses")
-public class Horse implements IGettingID {
+public class Horse {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -19,7 +17,6 @@ public class Horse implements IGettingID {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Mare> mares = new ArrayList<>();
 
-    @Override
     public long getId() {
         return id;
     }

@@ -4,7 +4,7 @@ import org.health.entity.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * Класс осуществляет обертку объекта User для реализации шифрании данных пароля
+ * The class wraps the User object to implement password data encryption
  */
 public class PasswordEncoderData {
     private PasswordEncoder passwordEncoder;

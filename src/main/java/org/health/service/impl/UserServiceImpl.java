@@ -1,14 +1,16 @@
 package org.health.service.impl;
 
 import java.util.*;
+
 import org.health.dao.*;
 import org.health.dto.UserDto;
 import org.health.entity.*;
-import org.health.model.ResponseServiceUser;
+import org.health.model.PasswordEncoderData;
 import org.health.service.*;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -17,6 +19,7 @@ import javax.persistence.criteria.Root;
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
     private SessionFactory sessionFactory;
+    private PasswordEncoderData passwordEncoderData;
 
     /**
      * <p>Before writing the data, check the presence of all fields filled, if at least one field is empty, cancel
@@ -26,22 +29,15 @@ public class UserServiceImpl implements UserService {
      * @return ResponseUserService
      */
     @Override
-    public ResponseServiceUser addUser(User user) {
-        ResponseServiceUser responseServiceUser = new ResponseServiceUser(user);
-        // Check the status of the fields, if the check did not pass the record.
-        if (!responseServiceUser.checkStatusFields()) {
-            return responseServiceUser;
-        }
+    public UserDto addUser(User user) {
+        User userAdd = passwordEncoderData.encodeUserPassword(user);
 
         // Checking the presence of the transmitted login
-        if (this.isLoginEmpty(user)) {
-            responseServiceUser.setMessage("Login exists");
-            responseServiceUser.setUser(user);
-            return responseServiceUser;
+        if (this.isLoginEmpty(userAdd)) {
+            return new UserDto(userAdd);
         }
 
-        responseServiceUser.setUser(userDao.addEntity(user));
-        return responseServiceUser;
+        return new UserDto(userDao.addEntity(userAdd));
     }
 
     private boolean isLoginEmpty(User user) {
@@ -54,10 +50,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseServiceUser updateUser(UserDto userDto) {
+    public UserDto updateUser(UserDto userDto) {
         //  get user by id and update
         User userByIdDto = userDto.update(userDao.getEntity(userDto.getId()));
-        return new ResponseServiceUser(userDao.updateEntity(userByIdDto));
+        return new UserDto(userDao.updateEntity(userByIdDto));
     }
 
     @Override
@@ -74,8 +70,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseServiceUser deleteUser(long id) {
-        return new ResponseServiceUser(userDao.deleteEntity(userDao.getEntity(id)));
+    public UserDto deleteUser(long id) {
+        return new UserDto(userDao.deleteEntity(userDao.getEntity(id)));
     }
 
     @Autowired
@@ -86,5 +82,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Autowired
+    public void setUserService(PasswordEncoderData passwordEncoderData) {
+        this.passwordEncoderData = passwordEncoderData;
     }
 }

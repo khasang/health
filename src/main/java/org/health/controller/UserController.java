@@ -3,11 +3,9 @@ package org.health.controller;
 import java.util.*;
 
 import io.swagger.annotations.*;
-import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.*;
 import org.health.model.PasswordEncoderData;
-import org.health.model.ResponseServiceUser;
 import org.health.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -19,20 +17,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
-    private PasswordEncoderData passwordEncoderData;
 
     @ApiOperation("Add user")
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseUserServiceDto addUser(@RequestBody User user) {
-        return new ResponseUserServiceDto(userService.addUser(passwordEncoderData.encodeUserPassword(user)));
+    public UserDto addUser(@RequestBody User user) {
+        return userService.addUser(user);
     }
 
     @ApiOperation("Update user")
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseUserServiceDto updateUser(@RequestBody UserDto userDto) {
-        return new ResponseUserServiceDto(userService.updateUser(userDto));
+    public UserDto updateUser(@RequestBody UserDto userDto) {
+        return userService.updateUser(userDto);
     }
 
     @ApiOperation("Get user by id")
@@ -52,13 +49,12 @@ public class UserController {
     @ApiOperation("Delete user by id")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseServiceUser deleteUserById(@PathVariable("id") long id) {
+    public UserDto deleteUserById(@PathVariable("id") long id) {
         return userService.deleteUser(id);
     }
 
     @Autowired
-    public void setUserService(UserService userService, PasswordEncoderData passwordEncoderData) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
-        this.passwordEncoderData = passwordEncoderData;
     }
 }

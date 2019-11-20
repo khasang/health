@@ -1,7 +1,6 @@
 package org.health.dao.impl;
 
 import org.health.dao.BasicDao;
-import org.health.dao.IGettingID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public class BasicDaoImpl<T extends IGettingID> implements BasicDao<T> {
+public class BasicDaoImpl<T> implements BasicDao<T> {
     private final Class<T> entityClass;
     protected SessionFactory sessionFactory;
 
@@ -23,13 +22,13 @@ public class BasicDaoImpl<T extends IGettingID> implements BasicDao<T> {
     @Override
     public T addEntity(T entity) {
         getSession().save(entity);
-        return getSession().get(entityClass, entity.getId());
+        return entity;
     }
 
     @Override
     public T updateEntity(T entity) {
         getSession().update(entity);
-        return getSession().get(entityClass, entity.getId());
+        return entity;
     }
 
     @Override

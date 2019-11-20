@@ -44,34 +44,39 @@
     <form class="form-signin">
         <h2 class="form-signin-heading">Register data</h2>
         <p>
-            <label for="firstName" class="sr-only">Username</label>
-            <input type="text" id="firstName" name="registration.firstName" class="form-control" placeholder="First name" required autofocus>
+            <label for="firstName" class="sr-only">firstName</label>
+            <input type="text" id="firstName" name="registration.firstName" class="form-control"
+                   placeholder="First name" required autofocus>
         </p>
         <p>
-            <label for="lastName" class="sr-only">Username</label>
-            <input type="text" id="lastName" name="registration.lastName" class="form-control" placeholder="Last name" required>
+            <label for="lastName" class="sr-only">lastName</label>
+            <input type="text" id="lastName" name="registration.lastName" class="form-control"
+                   placeholder="Last name" required>
         </p>
         <p>
-            <label for="patronymic" class="sr-only">Username</label>
-            <input type="text" id="patronymic" name="registration.patronymic" class="form-control" placeholder="Patronymic" required>
+            <label for="patronymic" class="sr-only">patronymic</label>
+            <input type="text" id="patronymic" name="registration.patronymic" class="form-control"
+                   placeholder="Patronymic" required>
         </p>
         <p>
-            <label for="login" class="sr-only">Username</label>
-            <input type="text" id="login" name="registration.login" class="form-control" placeholder="Login" required>
+            <label for="login" class="sr-only">login</label>
+            <input type="text" id="login" name="registration.login" class="form-control" placeholder="Login"
+                   required>
         </p>
         <p>
-            <label for="password" class="sr-only">Username</label>
-            <input type="password" id="password" name="registration.password" class="form-control" placeholder="Password" required>
+            <label for="password" class="sr-only">password</label>
+            <input type="password" id="password" name="registration.password" class="form-control"
+                   placeholder="Password" required>
         </p>
 
-        <button class="btn btn-lg btn-primary btn-block" type="button"
-                onclick="RestPost(
-                    $('#firstName').val(),
-                    $('#lastName').val(),
-                    $('#patronymic').val(),
-                    $('#login').val(),
-                    $('#password').val())">Registration
-        </button>
+        <input class="btn btn-lg btn-primary btn-block" type="button" value="Registration"
+               onclick="RestPost(
+                $('#firstName').val(),
+                $('#lastName').val(),
+                $('#patronymic').val(),
+                $('#login').val(),
+                $('#password').val())"/>
+
         <input class="btn btn-lg btn-primary btn-block" type="button" value="Cancel"
                onclick="location.pathname='login'"/>
     </form>

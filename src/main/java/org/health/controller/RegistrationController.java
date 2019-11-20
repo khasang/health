@@ -1,6 +1,5 @@
 package org.health.controller;
 
-import org.health.dto.ResponseUserServiceDto;
 import org.health.dto.UserDto;
 import org.health.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class RegistrationController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public ResponseUserServiceDto addUser(@RequestBody User user) {
+    public UserDto addUser(@RequestBody User user) {
         return this.userController.addUser(user);
     }
 

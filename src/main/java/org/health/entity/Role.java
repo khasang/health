@@ -2,12 +2,10 @@ package org.health.entity;
 
 
 
-import org.health.dao.IGettingID;
-
 import javax.persistence.*;
 
 @Entity(name = "roles")
-public class Role implements IGettingID {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -21,7 +19,6 @@ public class Role implements IGettingID {
     public Role() {
     }
 
-    @Override
     public long getId() {
         return id;
     }
