@@ -32,6 +32,7 @@ public class HorseController {
         return horseService.getHorse(id);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     @ResponseBody
     public List<Horse> getAllHorses() {
