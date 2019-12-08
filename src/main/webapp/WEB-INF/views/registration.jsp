@@ -7,9 +7,8 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
     <title>Registration</title>
 </head>
-
 <script>
-    var service = 'http://localhost:8080/registration/add';
+    var service = window.location.href + '/add';
 
     var RestPost = function (firstName, lastName, patronymic, login, password) {
         var JSONObject = {
