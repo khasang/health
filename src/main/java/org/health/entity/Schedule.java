@@ -1,6 +1,9 @@
 package org.health.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 /**
@@ -23,39 +26,42 @@ public class Schedule {
     @Column(name = "type")  // 0 - week, 1 - odd, 2 - even, 3 - custom
     private Integer type;
 
-    @Column(name = "day1Begin")
+
+    @Temporal(TemporalType.TIME)
     private Date day1Begin;
-    @Column(name = "day1End")
+    @Temporal(TemporalType.TIME)
     private Date day1End;
 
-    @Column(name = "day2Begin")
+    @Temporal(TemporalType.TIME)
     private Date day2Begin;
-    @Column(name = "day2End")
+    @Temporal(TemporalType.TIME)
     private Date day2End;
 
-    @Column(name = "day3Begin")
+    @Temporal(TemporalType.TIME)
     private Date day3Begin;
-    @Column(name = "day3End")
+    @Temporal(TemporalType.TIME)
     private Date day3End;
 
-    @Column(name = "day4Begin")
+    @Temporal(TemporalType.TIME)
     private Date day4Begin;
-    @Column(name = "day4End")
+
+    @DateTimeFormat
+    @Temporal(TemporalType.TIME)
     private Date day4End;
 
-    @Column(name = "day5Begin")
+    @Temporal(TemporalType.TIME)
     private Date day5Begin;
-    @Column(name = "day5End")
+    @Temporal(TemporalType.TIME)
     private Date day5End;
 
-    @Column(name = "day6Begin")
+    @Temporal(TemporalType.TIME)
     private Date day6Begin;
-    @Column(name = "day6End")
+    @Temporal(TemporalType.TIME)
     private Date day6End;
 
-    @Column(name = "day7Begin")
+    @Temporal(TemporalType.TIME)
     private Date day7Begin;
-    @Column(name = "day7End")
+    @Temporal(TemporalType.TIME)
     private Date day7End;
 
     public long getId() {
