@@ -64,6 +64,47 @@ public class Schedule {
     @Temporal(TemporalType.TIME)
     private Date day7End;
 
+    public Schedule(long id,
+                    Date day1Begin,
+                    Date day1End,
+
+                    Date day2Begin,
+                    Date day2End,
+
+                    Date day3Begin,
+                    Date day3End,
+
+                    Date day4Begin,
+                    Date day4End,
+
+                    Date day5Begin,
+                    Date day5End,
+
+                    Date day6Begin,
+                    Date day6End,
+
+                    Date day7Begin,
+                    Date day7End
+                    ) {
+        this.id = id;
+        this.day1Begin = day1Begin;
+        this.day1End = day1End;
+        this.day1Begin = day2Begin;
+        this.day1End = day2End;
+        this.day1Begin = day3Begin;
+        this.day1End = day3End;
+        this.day1Begin = day4Begin;
+        this.day1End = day4End;
+        this.day1Begin = day5Begin;
+        this.day1End = day5End;
+        this.day1Begin = day6Begin;
+        this.day1End = day6End;
+        this.day1Begin = day7Begin;
+        this.day1End = day7End;
+    }
+
+
+
     public long getId() {
         return id;
     }

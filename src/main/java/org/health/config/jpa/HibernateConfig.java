@@ -21,8 +21,11 @@ public class HibernateConfig {
     private Environment environment;
     private DataSource dataSource;
 
+
+
+
     // service registry -> session factory (cleanup service registry) -> session (to db)
-    @Bean
+    @Bean(name="entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
