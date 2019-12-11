@@ -36,8 +36,6 @@ public class RoleDto {
     public RoleDto getCloneRoleDto(Role role) {
         RoleDto roleDto = new RoleDto();
         if (role == null) {
-            // TODO не работает, roleDao = null ??????
-//            roleDto.getCloneRoleDto(this.roleDao.getEntity(1));
             return roleDto;
         }
 
