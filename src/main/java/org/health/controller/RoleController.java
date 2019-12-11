@@ -1,5 +1,6 @@
 package org.health.controller;
 
+import org.health.dto.RoleDto;
 import org.health.entity.Role;
 import org.health.service.RoleService;
 import org.springframework.http.MediaType;
@@ -40,7 +41,7 @@ public class RoleController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public List<Role> getAllRoles() {
+    public List<RoleDto> getAllRoles() {
         return roleService.getAllRoles();
     }
 

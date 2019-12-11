@@ -77,7 +77,6 @@ public class AppConfig {
     public PasswordEncoderData passwordEncoderData() {
         PasswordEncoderData passwordEncoderData = new PasswordEncoderData();
         passwordEncoderData.setPasswordEncoder(new BCryptPasswordEncoder());
-
         return passwordEncoderData;
     }
 }

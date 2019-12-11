@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
-
 import javax.sql.DataSource;
 
 @Configuration
@@ -27,7 +26,7 @@ public class DataConfig {
         dataSource.setUrl(environment.getRequiredProperty("jdbc.postgresql.url"));
         dataSource.setUsername(environment.getRequiredProperty("jdbc.postgresql.username"));
         dataSource.setPassword(environment.getRequiredProperty("jdbc.postgresql.password"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.postgresql.password"));
+
         return dataSource;
     }
 

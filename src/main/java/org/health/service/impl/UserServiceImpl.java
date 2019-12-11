@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
+    private UserDto userDto;
     private UserDao userDao;
     private SessionFactory sessionFactory;
     private PasswordEncoderData passwordEncoderData;
@@ -33,11 +34,11 @@ public class UserServiceImpl implements UserService {
         User userAdd = passwordEncoderData.encodeUserPassword(user);
 
         // Checking the presence of the transmitted login
-        if (this.isLoginEmpty(userAdd)) {
-            return new UserDto(userAdd);
-        }
+//        if (this.isLoginEmpty(userAdd)) {
+//            return userDto.getCloneUserDto(userAdd);
+//        }
 
-        return new UserDto(userDao.addEntity(userAdd));
+        return userDto.getCloneUserDto(userDao.addEntity(userAdd));
     }
 
     private boolean isLoginEmpty(User user) {
@@ -53,25 +54,25 @@ public class UserServiceImpl implements UserService {
     public UserDto updateUser(UserDto userDto) {
         //  get user by id and update
         User userByIdDto = userDto.update(userDao.getEntity(userDto.getId()));
-        return new UserDto(userDao.updateEntity(userByIdDto));
+        return userDto.getCloneUserDto(userDao.updateEntity(userByIdDto));
     }
 
     @Override
     public UserDto getUser(long id) {
-        return new UserDto(userDao.getEntity(id));
+        return userDto.getCloneUserDto(userDao.getEntity(id));
     }
 
     @Override
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtoList = new ArrayList<>();
-        userDao.getAllEntities().iterator().forEachRemaining(user -> userDtoList.add(new UserDto(user)));
+        userDao.getAllEntities().iterator().forEachRemaining(user -> userDtoList.add(userDto.getCloneUserDto(user)));
 
         return userDtoList;
     }
 
     @Override
     public UserDto deleteUser(long id) {
-        return new UserDto(userDao.deleteEntity(userDao.getEntity(id)));
+        return userDto.getCloneUserDto(userDao.deleteEntity(userDao.getEntity(id)));
     }
 
     @Autowired
@@ -87,5 +88,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public void setUserService(PasswordEncoderData passwordEncoderData) {
         this.passwordEncoderData = passwordEncoderData;
+    }
+
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    @Autowired
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 }

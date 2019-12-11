@@ -1,5 +1,6 @@
 package org.health.service;
 
+import org.health.dto.RoleDto;
 import org.health.entity.Role;
 
 import java.util.List;
@@ -37,5 +38,5 @@ public interface RoleService {
      * method required for getting roles
      * @return all roles
      **/
-    List<Role> getAllRoles();
+    List<RoleDto> getAllRoles();
 }

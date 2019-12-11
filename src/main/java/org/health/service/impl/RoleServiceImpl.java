@@ -1,11 +1,13 @@
 package org.health.service.impl;
 
 import org.health.dao.RoleDao;
+import org.health.dto.RoleDto;
 import org.health.entity.Role;
 import org.health.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("roleService")
@@ -33,13 +35,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getAllRoles() {
-        List<Role> roleList = roleDao.getAllEntities();
-        return roleList;
+    public List<RoleDto> getAllRoles() {
+        List<RoleDto> roleDtos = new ArrayList<>();
+        roleDao.getAllEntities().iterator().forEachRemaining(role -> roleDtos.add(new RoleDto().getCloneRoleDto(role)));
+        return roleDtos;
     }
 
     @Autowired
-    public void setRoleDao(RoleDao horseDao) {
-        this.roleDao = horseDao;
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
     }
 }

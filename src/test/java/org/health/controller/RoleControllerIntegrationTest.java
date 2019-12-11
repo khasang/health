@@ -1,11 +1,15 @@
 package org.health.controller;
 
+import org.health.dto.RoleDto;
+import org.health.dto.UserDto;
 import org.health.entity.Role;
 import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,6 +21,11 @@ public class RoleControllerIntegrationTest {
     private static final String DELETE = "delete";
     private static final String GET = "get";
     private static final String ALL = "all";
+
+    @Test
+    public void testGetAllRoles() {
+        getAllRoles().iterator().forEachRemaining(System.out::println);
+    }
 
     @Test
     public void testDelAddGet() {
@@ -67,14 +76,19 @@ public class RoleControllerIntegrationTest {
         return role;
     }
 
-    private List<Role> getAllRoles() {
+    private List<RoleDto> getAllRoles() {
         RestTemplate template = new RestTemplate();
-        ResponseEntity<Role[]> response =
-                template.getForEntity(
-                        "http://localhost:8080/role/all/",
-                        Role[].class);
+        ResponseEntity<List<RoleDto>> exchange = template.exchange(
+                ROOT + ALL,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<RoleDto>>() {
+                },
+                Collections.emptyList()
+        );
 
-        List<Role> roleList = Arrays.asList(response.getBody());
+        List<RoleDto> roleList = exchange.getBody();
+
         assertNotNull(roleList);
         return roleList;
     }

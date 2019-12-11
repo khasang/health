@@ -1,5 +1,6 @@
 package org.health.config.jpa;
 
+import org.health.entity.Role;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,9 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -28,6 +32,15 @@ public class HibernateConfig {
         sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan("org.health.entity");
         sessionFactory.setHibernateProperties(properties());
+
+//        CriteriaBuilder builder = sessionFactory.getCriteriaBuilder();
+//        CriteriaQuery<Role> roleCriteria = builder.createQuery(Role.class);
+//        Root<Role> roleRoot = roleCriteria.from(Role.class);
+//        roleCriteria.select(roleRoot);
+//
+//        System.out.print("sessionFactory.openSession().createQuery(roleCriteria).getResultList(); -> ");
+//        System.out.println(sessionFactory.openSession().createQuery(roleCriteria).getResultList());
+
         return sessionFactory;
     }
 

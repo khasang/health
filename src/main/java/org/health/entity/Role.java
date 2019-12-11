@@ -3,6 +3,8 @@ package org.health.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "roles")
 public class Role {
@@ -15,6 +17,9 @@ public class Role {
     private String name;
 
     private String description;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<User> users = new ArrayList<>();
 
     public Role() {
     }
@@ -43,6 +48,14 @@ public class Role {
         this.description = description;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -55,5 +68,14 @@ public class Role {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -1,8 +1,9 @@
 package org.health.entity;
 
 import javax.persistence.*;
-
 import io.swagger.annotations.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApiModel(value = "User", description = "Class representing the user.")
 @Entity
@@ -25,12 +26,16 @@ public class User implements Cloneable {
     private String patronymic;
 
     @ApiModelProperty(notes = "Login", required = true, example = "Ivan123", position = 5)
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
 
     private String password;
 
-    @Column(name = "role_id")
-    private long roleId;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Role currentRole;
+
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -49,7 +54,8 @@ public class User implements Cloneable {
             this.patronymic = user.patronymic;
             this.login = user.login;
             this.password = user.password;
-            this.roleId = user.roleId;
+            this.currentRole = user.currentRole;
+            this.roles = user.roles;
         }
     }
 
@@ -57,6 +63,23 @@ public class User implements Cloneable {
     protected User clone() throws CloneNotSupportedException {
         User clone = (User) super.clone();
         return new User(clone);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringRolesBuilder = new StringBuilder();
+        roles.iterator().forEachRemaining((s) -> stringRolesBuilder.append(s + "\n"));
+
+
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + stringRolesBuilder.toString() +
+                '}';
     }
 
     public long getId() {
@@ -107,11 +130,19 @@ public class User implements Cloneable {
         this.password = password;
     }
 
-    public long getRoleId() {
-        return roleId;
+    public Role getCurrentRole() {
+        return currentRole;
     }
 
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
+    public void setCurrentRole(Role currentRole) {
+        this.currentRole = currentRole;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

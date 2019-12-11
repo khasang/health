@@ -1,7 +1,11 @@
 package org.health.dto;
 
+import org.health.dao.RoleDao;
 import org.health.entity.*;
-import org.springframework.stereotype.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UserDto {
@@ -10,18 +14,36 @@ public class UserDto {
     private String lastName;
     private String patronymic;
     private String login;
-    private long roleId;
+    private RoleDto currantRole;
+    private List<RoleDto> listSetCurrantRoles = new ArrayList<>();
+
+    private RoleDao roleDao;
 
     public UserDto() {
     }
 
-    public UserDto(User user) {
-        this.id = user.getId();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
-        this.patronymic = user.getPatronymic();
-        this.login = user.getLogin();
-        this.roleId = user.getRoleId();
+    public UserDto getCloneUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.id = user.getId();
+        userDto.firstName = user.getFirstName();
+        userDto.lastName = user.getLastName();
+        userDto.patronymic = user.getPatronymic();
+        userDto.login = user.getLogin();
+
+        Role role = user.getCurrentRole();
+        if(user.getCurrentRole() == null) {
+            role = roleDao.getEntity(1);
+        }
+        userDto.currantRole = new RoleDto().getCloneRoleDto(role);
+        userDto.listSetCurrantRoles = this.getListRolesDto(user);
+
+        return userDto;
+    }
+
+    private List<RoleDto> getListRolesDto(User user) {
+        List<RoleDto> roleDtos = new ArrayList<>();
+        user.getRoles().iterator().forEachRemaining((p) -> roleDtos.add(new RoleDto().getCloneRoleDto(p)));
+        return roleDtos;
     }
 
     public User update(User user) {
@@ -30,9 +52,25 @@ public class UserDto {
         user.setLastName(lastName);
         user.setPatronymic(patronymic);
         user.setLogin(login);
-        user.setRoleId(roleId);
+//        user.setCurrent_role_id(roleId);
 
         return user;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringRolesBuilder = new StringBuilder();
+        listSetCurrantRoles.iterator().forEachRemaining((s) -> stringRolesBuilder.append("\n\t" + s));
+
+        return "UserDto{" +
+                "\n\tid=" + id +
+                "\n\tfirstName='" + firstName + '\'' +
+                "\n\tlastName='" + lastName + '\'' +
+                "\n\tpatronymic='" + patronymic + '\'' +
+                "\n\tlogin='" + login + '\'' +
+                "\n\tcurrantRole=" + currantRole +
+                "\n\tstringRolesBuilder=" + stringRolesBuilder +
+                "\n}\n";
     }
 
     public long getId() {
@@ -75,11 +113,24 @@ public class UserDto {
         this.login = login;
     }
 
-    public long getRoleId() {
-        return roleId;
+    public RoleDto getCurrantRole() {
+        return currantRole;
     }
 
-    public void setRoleId(long roleId) {
-        this.roleId = roleId;
+    public void setCurrantRole(RoleDto currantRole) {
+        this.currantRole = currantRole;
+    }
+
+    public List<RoleDto> getListSetCurrantRoles() {
+        return listSetCurrantRoles;
+    }
+
+    public void setListSetCurrantRoles(List<RoleDto> listSetCurrantRoles) {
+        this.listSetCurrantRoles = listSetCurrantRoles;
+    }
+
+    @Autowired
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
     }
 }
