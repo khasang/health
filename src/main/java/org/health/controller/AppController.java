@@ -31,7 +31,7 @@ public class AppController {
 
     // http://localhost:8080/
     @RequestMapping("/hello/{name}")
-    public String getHelloPage(@PathVariable("name") String name, Model model){
+    public String getHelloPage(@PathVariable("name") String name, Model model) {
         model.addAttribute("login", name);
         return "hello";
     }
@@ -43,8 +43,7 @@ public class AppController {
     }
 
     @RequestMapping(value = "/dogs/get/count/{name}/description/{description}")
-    public String getDogsCount(@PathVariable("name") String name, @PathVariable("description") String description,
-                               Model model){
+    public String getDogsCount(@PathVariable("name") String name, @PathVariable("description") String description, Model model) {
         model.addAttribute("info", sqlRequest.getInfo(name, description));
         return "dogs";
     }

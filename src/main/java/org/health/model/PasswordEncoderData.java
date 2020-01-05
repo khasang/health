@@ -1,6 +1,6 @@
 package org.health.model;
 
-import org.health.entity.User;
+import org.health.entity.userdb.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**

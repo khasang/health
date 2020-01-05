@@ -4,8 +4,7 @@ import java.util.*;
 
 import io.swagger.annotations.*;
 import org.health.dto.UserDto;
-import org.health.entity.*;
-import org.health.model.PasswordEncoderData;
+import org.health.entity.userdb.User;
 import org.health.service.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;

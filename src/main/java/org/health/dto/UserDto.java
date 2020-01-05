@@ -2,6 +2,7 @@ package org.health.dto;
 
 import org.health.dao.RoleDao;
 import org.health.entity.*;
+import org.health.entity.userdb.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ public class UserDto {
         userDto.patronymic = user.getPatronymic();
         userDto.login = user.getLogin();
 
-        Role role = user.getCurrentRole();
-        if(user.getCurrentRole() == null) {
-            role = roleDao.getEntity(1);
-        }
-        userDto.currantRole = new RoleDto().getCloneRoleDto(role);
+//        Role role = user.getCurrentRole();
+//        if(user.getCurrentRole() == null) {
+//            role = roleDao.getEntity(1);
+//        }
+        userDto.currantRole = new RoleDto().getCloneRoleDto(user.getCurrentRole());
         userDto.listSetCurrantRoles = this.getListRolesDto(user);
 
         return userDto;

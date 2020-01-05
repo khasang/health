@@ -1,7 +1,9 @@
-package org.health.entity;
+package org.health.entity.userdb;
+
+import io.swagger.annotations.ApiModel;
+import org.health.entity.Role;
 
 import javax.persistence.*;
-import io.swagger.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,32 +11,35 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements Cloneable {
-    @ApiModelProperty(notes = "Unique identifier", required = true, example = "1", position = 1)
+//    @ApiModelProperty(notes = "Unique identifier", required = true, example = "1", position = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ApiModelProperty(notes = "First name", required = true, example = "Ivan", position = 2)
-    @Column(name = "first_name")
+//    @ApiModelProperty(notes = "First name", required = true, example = "Ivan", position = 2)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @ApiModelProperty(notes = "Last name", required = true, example = "Ivanov", position = 3)
-    @Column(name = "last_name")
+//    @ApiModelProperty(notes = "Last name", required = true, example = "Ivanov", position = 3)
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @ApiModelProperty(notes = "Patronymic", required = true, example = "Ivanovich", position = 4)
+//    @ApiModelProperty(notes = "Patronymic", required = true, example = "Ivanovich", position = 4)
+    @Column(name = "patronymic", nullable = false)
     private String patronymic;
 
-    @ApiModelProperty(notes = "Login", required = true, example = "Ivan123", position = 5)
-    @Column(name = "login", unique = true, nullable = false)
+//    @ApiModelProperty(notes = "Login", required = true, example = "Ivan123", position = 5)
+    @Column(name = "login", unique = true)
     private String login;
 
+//    @ApiModelProperty(notes = "Password", required = true, example = "tg64dGjf9Trs", position = 6)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Role currentRole;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
 
     public User() {

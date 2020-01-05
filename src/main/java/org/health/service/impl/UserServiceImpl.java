@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.health.dao.*;
 import org.health.dto.UserDto;
-import org.health.entity.*;
+import org.health.entity.userdb.User;
 import org.health.model.PasswordEncoderData;
 import org.health.service.*;
 import org.hibernate.SessionFactory;
@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
         Root<User> userLoginRoot = userLoginCriteria.from(User.class);
         userLoginCriteria.select(userLoginRoot);
         userLoginCriteria.where(builder.equal(userLoginRoot.get("login"), user.getLogin()));
+
         return sessionFactory.openSession().createQuery(userLoginCriteria).getResultList().size() > 0;
     }
 

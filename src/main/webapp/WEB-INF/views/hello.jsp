@@ -7,7 +7,35 @@
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
     <title>Hello</title>
 </head>
+<script>
+    var service = window.location.href + '/add';
 
+    var RestPost = function (firstName, lastName, patronymic, login, password) {
+        var JSONObject = {
+            'firstName': firstName,
+            'lastName': lastName,
+            'patronymic': patronymic,
+            'login': login,
+            'password': password
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: service,
+            dataType: 'json',
+            data: JSON.stringify(JSONObject),
+            accept: 'json',
+            contentType: 'application/json;utf-8',
+            async: false,
+            success: function (result) {
+                $('#response').html(JSON.stringify(result))
+            },
+            error: function (jqXHR, testStatus, errorThrown) {
+                $('#response').html(JSON.stringify(jqXHR))
+            }
+        });
+    };
+</script>
 <body>
 <div class="container">
     <form class="form-signin">

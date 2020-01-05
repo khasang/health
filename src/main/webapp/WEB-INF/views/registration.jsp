@@ -16,8 +16,7 @@
             'lastName': lastName,
             'patronymic': patronymic,
             'login': login,
-            'password': password,
-            'roleId': '2'
+            'password': password
         };
 
         $.ajax({

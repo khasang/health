@@ -2,7 +2,7 @@ package org.health.service;
 
 import java.util.*;
 import org.health.dto.UserDto;
-import org.health.entity.*;
+import org.health.entity.userdb.User;
 
 public interface UserService {
     /**

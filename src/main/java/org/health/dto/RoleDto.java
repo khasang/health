@@ -54,4 +54,13 @@ public class RoleDto {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    public Role convertToRole() {
+        Role role = new Role();
+        role.setId(id);
+        role.setName(name);
+        role.setDescription(description);
+
+        return role;
+    }
 }
