@@ -29,4 +29,26 @@ gradle
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-/src/main/webapp/reactjs/
+# ReactJS App
+
+# dependencies
+/src/main/webapp/reactjs/node_modules
+/src/main/webapp/reactjs/.pnp
+/src/main/webapp/reactjs/.pnp.js
+
+# testing
+/src/main/webapp/reactjs/coverage
+
+# production
+/src/main/webapp/reactjs/build
+
+# misc
+/src/main/webapp/reactjs/.DS_Store
+/src/main/webapp/reactjs/.env.local
+/src/main/webapp/reactjs/.env.development.local
+/src/main/webapp/reactjs/.env.test.local
+/src/main/webapp/reactjs/.env.production.local
+
+/src/main/webapp/reactjs/npm-debug.log*
+/src/main/webapp/reactjs/yarn-debug.log*
+/src/main/webapp/reactjs/yarn-error.log*
