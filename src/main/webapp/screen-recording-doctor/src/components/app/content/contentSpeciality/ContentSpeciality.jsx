@@ -17,7 +17,7 @@ const ContentSpeciality = (props) => {
                             <NavLink to={'/'}>{'Назад'}</NavLink>
                         </div>
                         <div className={s.outerTitleSpeciality}>
-                            <h3>{props.state.speciality[0].toUpperCase() + props.state.speciality.substring(1)}</h3>
+                            {props.state.speciality[0].toUpperCase() + props.state.speciality.substring(1)}
                         </div>
                     </div>
 

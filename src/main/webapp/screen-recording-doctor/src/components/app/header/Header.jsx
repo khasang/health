@@ -8,7 +8,7 @@ const Header = (props) => {
                 <img src={props.state.imgSrc} alt={props.state.imgLogo}/>
             </div>
             <div className={s.title}>
-                <h1>Запись к доктору</h1>
+                Запись к доктору
             </div>
         </header>
     )
