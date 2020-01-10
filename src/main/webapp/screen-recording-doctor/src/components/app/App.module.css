@@ -1,0 +1,7 @@
+.app_wrapper {
+    /*margin: 0 auto;*/
+
+    /*width: 1200px;*/
+    display: grid;
+    grid-template-rows: 1fr;
+}

@@ -1,0 +1,28 @@
+.app_wrapper {
+    background-color: #ffffd8;
+
+    display: grid;
+    grid-template-columns: 1fr 9fr;
+    grid-template-rows: 1fr;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.main_content {
+    background-color: #0000ff;
+}
+
+.image > img {
+    margin: 5px;
+    height: 40px;
+}
+

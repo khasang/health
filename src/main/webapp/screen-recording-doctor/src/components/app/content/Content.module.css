@@ -1,0 +1,11 @@
+.main {
+    background-color: #cccfff;
+    padding: 10px;
+}
+
+.wrapperDoctors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em;
+    grid-auto-rows: minmax(100px, auto);
+}
