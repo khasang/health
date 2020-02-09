@@ -9,6 +9,15 @@ public class RoleDto {
     private String name;
     private String description;
 
+    public RoleDto() {
+    }
+
+    public RoleDto(Role role) {
+        id = role.getId();
+        name = role.getName();
+        description = role.getDescription();
+    }
+
     public long getId() {
         return id;
     }
@@ -33,19 +42,6 @@ public class RoleDto {
         this.description = description;
     }
 
-    public RoleDto getCloneRoleDto(Role role) {
-        RoleDto roleDto = new RoleDto();
-        if (role == null) {
-            return roleDto;
-        }
-
-        roleDto.id = role.getId();
-        roleDto.name = role.getName();
-        roleDto.description = role.getDescription();
-
-        return roleDto;
-    }
-
     @Override
     public String toString() {
         return "RoleDto{" +
@@ -53,14 +49,5 @@ public class RoleDto {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
-    }
-
-    public Role convertToRole() {
-        Role role = new Role();
-        role.setId(id);
-        role.setName(name);
-        role.setDescription(description);
-
-        return role;
     }
 }

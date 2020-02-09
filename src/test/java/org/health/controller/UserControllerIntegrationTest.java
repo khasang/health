@@ -1,15 +1,22 @@
 package org.health.controller;
 
-import static org.junit.Assert.*;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.health.dto.RoleDto;
 import org.health.dto.UserDto;
-import org.health.entity.*;
-import org.junit.*;
-import org.springframework.core.*;
+import org.health.entity.Role;
+import org.health.entity.Specialty;
+import org.health.entity.userdb.User;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.web.client.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertNotNull;
 
 public class UserControllerIntegrationTest {
     private static final String ROOT_USER = "http://localhost:8080/user";
@@ -31,206 +38,72 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    public void testGetById() {
-        RoleDto roleDto = getEntityById(6, ROOT_ROLE, RoleDto.class).getBody();
-        UserDto userDto = getEntityById(67, ROOT_USER, UserDto.class).getBody();
-
-        System.out.println(roleDto);
-        System.out.println(userDto);
+    public void addNewUser() {
+        // получаем все роли
+        Set<RoleDto> allRoles = getAllRoles();
+        System.out.println("allRoles=" + allRoles);
+        System.out.println();
+//
+//        User userTest = createUserTest();
+//        System.out.println("userTest=" + userTest);
+//        System.out.println();
+//
+//        UserDto userPost = userApiMethodPost(userTest);
+//        System.out.println("userPost=" + userPost);
+//        System.out.println();
+//
+//        Set<Role> roles = new HashSet<>();
+//        allRoles.iterator().forEachRemaining(r -> roles.add(new Role(r)));
+//        userPost.setRoleDtos(allRoles);
+//        System.out.println("userPostAndRole=" + userPost);
+//
+//        userPost.setPassword("123");
+//        User userPut = userApiMethodPut(userPost);
+//        System.out.println("userPut=" + userPut);
     }
 
-    private <T>ResponseEntity<T> getEntityById(long id, String root, Class<T> aClass) {
-        return new RestTemplate().exchange(
-                root + "/get/{id}",
-                HttpMethod.GET,
-                null,
-                aClass,
-                id
-        );
-    }
-
-    @Test
-    public void testAddUsers() {
+    private User createUserTest() {
         User user = new User();
-        user.setFirstName("Зверик");
-        user.setLastName("Екатерина");
-        user.setPatronymic("Анатольевна");
-        user.setLogin("Ekaterina1000000");
-        user.setPassword("Katya");
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        HttpEntity<User> entity = new HttpEntity<>(user, headers);
-
-        RestTemplate template = new RestTemplate();
-        UserDto userDto = template.exchange(
-                ROOT_USER + ADD,
-                HttpMethod.POST,
-                entity,
-                UserDto.class
-        ).getBody();
-
-        System.out.println(userDto);
-
-        assertNotNull(userDto);
-        assertEquals(user.getFirstName(), userDto.getFirstName());
-        assertEquals(user.getLastName(), userDto.getLastName());
-        assertEquals(user.getPatronymic(), userDto.getPatronymic());
-        assertEquals(user.getLogin(), userDto.getLogin());
-    }
-
-    @Test
-    public void testGetAllUsers() {
-        template = new RestTemplate();
-        ResponseEntity<List<UserDto>> exchange = template.exchange(
-                ROOT_USER + ALL,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<UserDto>>() {
-                },
-                Collections.emptyList()
-        );
-
-        List<UserDto> usersDtosExchange = exchange.getBody();
-
-        assertNotNull(usersDtosExchange);
-        usersDtosExchange.iterator().forEachRemaining(System.out::println);
-    }
-
-    @Test
-    public void test() {
-        User user_1 = createUser(
-                "Ivan",
-                "Ivanov",
-                "Ivanovich",
-                "Ivan123",
-                "qwerty1");
-
-        User user_2 = createUser(
-                "Petr",
-                "Petriv",
-                "Petrovich",
-                "Petr456",
-                "qwerty2");
-
-        UserDto userDto_1 = testAdd(user_1);
-        UserDto userDto_2 = testAdd(user_2);
-
-        testGetDto(userDto_1.getId());
-        testGetDto(userDto_2.getId());
-
-        testGetAll(userDto_1, userDto_2);
-
-        testUpdate(userDto_1, "Sidorov");
-        testUpdate(userDto_2, "Vasilev");
-
-        testDelete(userDto_1);
-        testDelete(userDto_2);
-    }
-
-    private void testDelete(UserDto userDto) {
-        HttpEntity<UserDto> entity = new HttpEntity<>(userDto, headers);
-        UserDto userDtoExchange = template.exchange(
-                ROOT_USER + DELETE + "/{id}",
-                HttpMethod.DELETE,
-                entity,
-                UserDto.class,
-                userDto.getId()
-        ).getBody();
-
-        assertNotNull(userDtoExchange);
-        assertEquals(userDto.getId(), userDtoExchange.getId());
-    }
-
-    private void testUpdate(UserDto userDto, String lastName) {
-        userDto.setLastName(lastName);
-
-        HttpEntity<UserDto> entity = new HttpEntity<>(userDto, headers);
-        UserDto userDto1 = template.exchange(
-                ROOT_USER + UPDATE,
-                HttpMethod.PUT,
-                entity,
-                UserDto.class
-        ).getBody();
-
-        assertNotNull(userDto1);
-        assertEquals(lastName, userDto1.getLastName());
-    }
-
-    private void testGetAll(UserDto... userDtos) {
-        template = new RestTemplate();
-        List<UserDto> usersDtosExchange = template.exchange(
-                ROOT_USER + ALL,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<UserDto>>() {
-                },
-                Collections.emptyList()
-        ).getBody();
-
-        assertNotNull(usersDtosExchange);
-
-        AtomicInteger i = new AtomicInteger(userDtos.length);
-        List<UserDto> userServiceDtos = new ArrayList<>(Arrays.asList(userDtos));
-        userServiceDtos.iterator().forEachRemaining(p -> {
-            for (UserDto userDto : usersDtosExchange) {
-                if (p.getId() == userDto.getId()) {
-                    i.getAndDecrement();
-                    break;
-                }
-            }
-        });
-
-        assertEquals(0, i.get()); // admin and user
-    }
-
-    private void testGetDto(long id) {
-        template = new RestTemplate();
-        ResponseEntity<UserDto> responseEntity = template.exchange(
-                ROOT_USER + GET + "/{id}",
-                HttpMethod.GET,
-                null,
-                UserDto.class,
-                id
-        );
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        UserDto userDto = responseEntity.getBody();
-        assertNotNull(userDto);
-        assertEquals(id, userDto.getId());
-    }
-
-    private UserDto testAdd(User user) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-        HttpEntity<User> entity = new HttpEntity<>(user, headers);
-
-        RestTemplate template = new RestTemplate();
-        UserDto userDto = template.exchange(
-                ROOT_USER + ADD,
-                HttpMethod.POST,
-                entity,
-                UserDto.class
-        ).getBody();
-
-        assertNotNull(userDto);
-        assertEquals(user.getFirstName(), userDto.getFirstName());
-        assertEquals(user.getLastName(), userDto.getLastName());
-        assertEquals(user.getPatronymic(), userDto.getPatronymic());
-        assertEquals(user.getLogin(), userDto.getLogin());
-
-        return userDto;
-    }
-
-    private User createUser(String firstName, String lastName, String patronymic, String login, String pass) {
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setPatronymic(patronymic);
-        user.setLogin(login);
-        user.setPassword(pass);
+        user.setFirstName("firstName_test");
+        user.setLastName("lastName_test");
+        user.setPatronymic("patronymic_test");
+        user.setLogin("login_test");
+        user.setPassword("password_test");
 
         return user;
+    }
+
+    public UserDto userApiMethodPost(User user) {
+        return template.exchange(
+                "http://localhost:8080/user",
+                HttpMethod.POST,
+                new HttpEntity<>(user, headers),
+                UserDto.class
+        ).getBody();
+    }
+
+    public User userApiMethodPut(User user) {
+        return template.exchange(
+                "http://localhost:8080/user",
+                HttpMethod.PUT,
+                new HttpEntity<>(user, headers),
+                User.class
+        ).getBody();
+    }
+
+    private Set<RoleDto> getAllRoles() {
+        ResponseEntity<Set<RoleDto>> exchange = template.exchange(
+                "http://localhost:8080/role/all",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Set<RoleDto>>() {
+                },
+                Collections.emptyList()
+        );
+
+        Set<RoleDto> roleList = exchange.getBody();
+
+        assertNotNull(roleList);
+        return roleList;
     }
 }

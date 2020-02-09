@@ -1,6 +1,10 @@
 package org.health.dao;
 
 import org.health.entity.Role;
+import org.health.entity.userdb.User;
 
-public interface RoleDao extends BasicDao<Role>{
+import java.util.List;
+
+public interface RoleDao extends BasicDao<Role> {
+    List<User> getUsersByIdRole(long id);
 }

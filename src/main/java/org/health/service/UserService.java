@@ -1,6 +1,7 @@
 package org.health.service;
 
 import java.util.*;
+
 import org.health.dto.UserDto;
 import org.health.entity.userdb.User;
 
@@ -11,15 +12,15 @@ public interface UserService {
      * @param user - user for adding
      * @return created user
      */
-    UserDto addUser(User user);
+    User add(User user);
 
     /**
      * method required for updating user
      *
-     * @param userDto - user for update
+     * @param user - user for update
      * @return updated user
      */
-    UserDto updateUser(UserDto userDto);
+    User updateUser(User user);
 
     /**
      * method required for getting user by id
@@ -43,4 +44,11 @@ public interface UserService {
      * @return deleted user by id
      */
     UserDto deleteUser(long id);
+
+    /**
+     * Метод проверяет наличие пользователя в записях с логином
+     * @param login
+     * @return
+     */
+    User checkLoginFree(String login);
 }

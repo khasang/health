@@ -30,50 +30,48 @@ public class UserServiceImpl implements UserService {
      * @return ResponseUserService
      */
     @Override
-    public UserDto addUser(User user) {
-        User userAdd = passwordEncoderData.encodeUserPassword(user);
-
-        // Checking the presence of the transmitted login
-//        if (this.isLoginEmpty(userAdd)) {
-//            return userDto.getCloneUserDto(userAdd);
-//        }
-
-        return userDto.getCloneUserDto(userDao.addEntity(userAdd));
+    public User add(User user) {
+        return userDao.addEntity(passwordEncoderData.encodeUserPassword(user));
     }
 
-    private boolean isLoginEmpty(User user) {
-        CriteriaBuilder builder = sessionFactory.getCriteriaBuilder();
-        CriteriaQuery<User> userLoginCriteria = builder.createQuery(User.class);
-        Root<User> userLoginRoot = userLoginCriteria.from(User.class);
-        userLoginCriteria.select(userLoginRoot);
-        userLoginCriteria.where(builder.equal(userLoginRoot.get("login"), user.getLogin()));
-
-        return sessionFactory.openSession().createQuery(userLoginCriteria).getResultList().size() > 0;
-    }
 
     @Override
-    public UserDto updateUser(UserDto userDto) {
+    public User updateUser(User user) {
         //  get user by id and update
-        User userByIdDto = userDto.update(userDao.getEntity(userDto.getId()));
-        return userDto.getCloneUserDto(userDao.updateEntity(userByIdDto));
+        User userUpdate = userDao.updateEntity(user);
+        return userUpdate;
     }
 
     @Override
     public UserDto getUser(long id) {
-        return userDto.getCloneUserDto(userDao.getEntity(id));
+        return new UserDto(userDao.getEntity(id));
     }
 
     @Override
     public List<UserDto> getAllUsers() {
         List<UserDto> userDtoList = new ArrayList<>();
-        userDao.getAllEntities().iterator().forEachRemaining(user -> userDtoList.add(userDto.getCloneUserDto(user)));
+        userDao.getAllEntities().iterator().forEachRemaining(u -> userDtoList.add(new UserDto(u)));
 
         return userDtoList;
     }
 
     @Override
     public UserDto deleteUser(long id) {
-        return userDto.getCloneUserDto(userDao.deleteEntity(userDao.getEntity(id)));
+        return new UserDto(userDao.deleteEntity(userDao.getEntity(id)));
+    }
+
+    @Override
+    public User checkLoginFree(String login) {
+        CriteriaBuilder builder = sessionFactory.getCriteriaBuilder();
+        CriteriaQuery<User> userLoginCriteria = builder.createQuery(User.class);
+        Root<User> userLoginRoot = userLoginCriteria.from(User.class);
+        userLoginCriteria.select(userLoginRoot);
+        userLoginCriteria.where(builder.equal(userLoginRoot.get("login"), login));
+
+        List<User> resultList = sessionFactory.openSession().createQuery(userLoginCriteria).getResultList();
+        return resultList.size() == 0
+                ? null
+                : resultList.get(0);
     }
 
     @Autowired

@@ -12,16 +12,25 @@ import javax.persistence.*;
 public class Admin {
     @ApiModelProperty(notes = "Unique identifier", required = true, example = "1", position = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId")
     private User user;
 
     @Column(name = "description")
     private String description;
 
     public Admin() {
+    }
+
+    public Admin(Admin admin) {
+        if (admin != null) {
+            this.id = admin.getId();
+            this.user = new User(admin.user);
+            this.description = admin.description;
+        }
     }
 
     public long getId() {

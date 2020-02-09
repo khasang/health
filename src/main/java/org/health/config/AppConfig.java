@@ -4,6 +4,8 @@ import org.health.dao.*;
 import org.health.dao.impl.*;
 import org.health.entity.*;
 import org.health.entity.userdb.User;
+import org.health.entity.userdb.extend.Admin;
+import org.health.entity.userdb.extend.Doctor;
 import org.health.model.Dog;
 import org.health.model.PasswordEncoderData;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +39,23 @@ public class AppConfig {
     }
 
     @Bean
+    public AdminDao adminDao() {
+        return new AdminDaoImpl(Admin.class);
+    }
+
+    @Bean
+    public DoctorDao doctorDao() {
+        return new DoctorDaoImpl(Doctor.class);
+    }
+
+    @Bean
     public RoleDao roleDao() {
         return new RoleDaoImpl(Role.class);
+    }
+
+    @Bean
+    public SpecialtyDao specialtyDao() {
+        return new SpecialtyDaoImpl(Specialty.class);
     }
 
     @Bean
@@ -49,11 +66,6 @@ public class AppConfig {
     @Bean
     public ResultExaminationDao resultExaminationDao() {
         return new ResultExaminationDaoImpl(ResultExamination.class);
-    }
-
-    @Bean
-    public PersonDao personDao() {
-        return new PersonDaoImpl(Person.class);
     }
 
     @Bean

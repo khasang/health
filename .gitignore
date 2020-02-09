@@ -30,7 +30,6 @@ gradle
 hs_err_pid*
 
 # ReactJS App
-
 # dependencies
 /src/main/webapp/reactjs/node_modules
 /src/main/webapp/reactjs/.pnp
@@ -52,3 +51,29 @@ hs_err_pid*
 /src/main/webapp/reactjs/npm-debug.log*
 /src/main/webapp/reactjs/yarn-debug.log*
 /src/main/webapp/reactjs/yarn-error.log*
+
+
+
+
+# ReactJS App screen-recording-doctor
+# dependencies
+/src/main/webapp/screen-recording-doctor/node_modules
+/src/main/webapp/screen-recording-doctor/.pnp
+/src/main/webapp/screen-recording-doctor/.pnp.js
+
+# testing
+/src/main/webapp/screen-recording-doctor/coverage
+
+# production
+/src/main/webapp/screen-recording-doctor/build
+
+# misc
+/src/main/webapp/screen-recording-doctor/.DS_Store
+/src/main/webapp/screen-recording-doctor/.env.local
+/src/main/webapp/screen-recording-doctor/.env.development.local
+/src/main/webapp/screen-recording-doctor/.env.test.local
+/src/main/webapp/screen-recording-doctor/.env.production.local
+
+/src/main/webapp/screen-recording-doctor/npm-debug.log*
+/src/main/webapp/screen-recording-doctor/yarn-debug.log*
+/src/main/webapp/screen-recording-doctor/yarn-error.log*

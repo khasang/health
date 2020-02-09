@@ -1,11 +1,15 @@
 package org.health.entity;
 
+import org.health.dto.RoleDto;
+import org.health.entity.userdb.User;
+
 import javax.persistence.*;
+import java.util.*;
 
 @Entity(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private long id;
 
@@ -14,7 +18,30 @@ public class Role {
 
     private String description;
 
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users = new LinkedList<>();
+
     public Role() {
+    }
+
+    public Role(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Role(long id) {
+        this.id = id;
+    }
+
+    public Role(RoleDto roleDto) {
+        this.name = roleDto.getName();
+        this.description = roleDto.getDescription();
     }
 
     public long getId() {
@@ -41,18 +68,26 @@ public class Role {
         this.description = description;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+    public List<User> getUsers() {
+        return users;
+    }
 
-        if (obj != null && obj.getClass() == this.getClass()) {
-            Role role = (Role) obj;
-            return getName().equals(role.getName());
-        } else {
-            return false;
-        }
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return id == role.id &&
+                Objects.equals(name, role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     @Override
@@ -61,6 +96,7 @@ public class Role {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", users=" + users +
                 '}';
     }
 }
